@@ -8,14 +8,12 @@ import android.view.WindowManager
 import android.widget.RadioButton
 import android.widget.Toast
 
-import com.srs.lmpapp.utils.MSPButton
-import com.srs.lmpapp.utils.MSPTextViewBold
-import kotlinx.android.synthetic.main.activity_register.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.srs.lmpapp.R
+import com.srs.lmpapp.databinding.ActivityRegisterBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.User
 
@@ -28,31 +26,24 @@ class RegisterActivity : BaseActivity() {
     /**
      * This function is auto created by Android when the Activity Class is created.
      */
-    lateinit var tv_login: MSPTextViewBold
-    lateinit var  btn_register: MSPButton
-    override fun onCreate(savedInstanceState: Bundle?) {
-        //This call the parent constructor
-        super.onCreate(savedInstanceState)
-        // This is used to align the xml view to this class
-        setContentView(R.layout.activity_register)
+    private lateinit var binding: ActivityRegisterBinding
 
-        // TODO Step 3: Hide the status bar for the LoginActivity to make it full screen activity.
-        // START
-        // This is used to hide the status bar and make the splash screen as a full screen activity.
-        // It is deprecated in the API level 30. I will update you with the alternate solution soon.
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding=ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         setupActionBar()
 
-        tv_login=findViewById(R.id.tv_login)
-        tv_login.setOnClickListener()
+
+        binding.tvLogin.setOnClickListener()
         {
             onBackPressed()
         }
-        btn_register=findViewById(R.id.btn_register)
-        btn_register.setOnClickListener()
+        binding.btnRegister.setOnClickListener()
         {
             if(validateRegisterDetails())
             {
@@ -67,7 +58,7 @@ class RegisterActivity : BaseActivity() {
      */
     private fun setupActionBar() {
 
-        setSupportActionBar(toolbar_register_activity)
+        setSupportActionBar(binding.toolbarRegisterActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -75,7 +66,7 @@ class RegisterActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
 
-        toolbar_register_activity.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarRegisterActivity.setNavigationOnClickListener { onBackPressed() }
     }
     // END
 
@@ -86,37 +77,37 @@ class RegisterActivity : BaseActivity() {
      */
     private fun validateRegisterDetails(): Boolean {
         return when {
-            TextUtils.isEmpty(et_first_name.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(binding.etFirstName.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_first_name), true)
                 false
             }
 
-            TextUtils.isEmpty(et_last_name.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(binding.etLastName.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_last_name), true)
                 false
             }
 
-            TextUtils.isEmpty(et_email.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(binding.etEmail.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
                 false
             }
 
-            TextUtils.isEmpty(et_password.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(binding.etPassword.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_password), true)
                 false
             }
 
-            TextUtils.isEmpty(et_confirm_password.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(binding.etConfirmPassword.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_confirm_password), true)
                 false
             }
 
-            et_password.text.toString().trim { it <= ' ' } != et_confirm_password.text.toString()
+            binding.etPassword.text.toString().trim { it <= ' ' } != binding.etConfirmPassword.text.toString()
                 .trim { it <= ' ' } -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_password_and_confirm_password_mismatch), true)
                 false
             }
-            !cb_terms_and_condition.isChecked -> {
+            !binding.cbTermsAndCondition.isChecked -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_agree_terms_and_condition), true)
                 false
             }
@@ -134,9 +125,9 @@ class RegisterActivity : BaseActivity() {
             // Show the progress dialog.
             showProgressDialog(resources.getString(R.string.please_wait))
 
-            val email: String = et_email.text.toString().trim { it <= ' ' }
-            val password: String = et_password.text.toString().trim { it <= ' ' }
-            var id: Int = rd_userType.checkedRadioButtonId
+            val email: String = binding.etEmail.text.toString().trim { it <= ' ' }
+            val password: String = binding.etPassword.text.toString().trim { it <= ' ' }
+            var id: Int = binding.rdUserType.checkedRadioButtonId
             val selectedType: RadioButton = findViewById(id)
             var userType = selectedType.text.toString()
             // Create an instance and create a register a user with email and password.
@@ -164,9 +155,9 @@ class RegisterActivity : BaseActivity() {
                             val user = User(
                                 firebaseUser.uid,
                                 userType,
-                                et_first_name.text.toString().trim { it <= ' ' },
-                                et_last_name.text.toString().trim { it <= ' ' },
-                                et_email.text.toString().trim { it <= ' ' }
+                                binding.etFirstName.text.toString().trim { it <= ' ' },
+                                binding.etLastName.text.toString().trim { it <= ' ' },
+                                binding.etLastName.text.toString().trim { it <= ' ' }
                             )
                             // END
 

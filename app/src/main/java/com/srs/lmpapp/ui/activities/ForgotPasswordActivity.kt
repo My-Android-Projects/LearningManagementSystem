@@ -4,25 +4,27 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.srs.lmpapp.R
-import kotlinx.android.synthetic.main.activity_forgot_password.*
+import com.srs.lmpapp.databinding.ActivityFacultyHomeBinding
+import com.srs.lmpapp.databinding.ActivityForgotPasswordBinding
 class ForgotPasswordActivity : BaseActivity() {
 
     /**
      * This function is auto created by Android when the Activity Class is created.
      */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        //This call the parent constructor
-        super.onCreate(savedInstanceState)
-        // This is used to align the xml view to this class
-        setContentView(R.layout.activity_forgot_password)
+    private lateinit var binding: ActivityForgotPasswordBinding
 
-        // TODO Step 7: Call the setup action bar function.
-        // START
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+
+        binding=ActivityForgotPasswordBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         setupActionBar()
-        btn_submit.setOnClickListener {
+        binding.btnSubmit.setOnClickListener {
 
             // Get the email id from the input field.
-            val email: String = et_email_forgot_pwd.text.toString().trim { it <= ' ' }
+            val email: String = binding.etEmailForgotPwd.text.toString().trim { it <= ' ' }
 
             // Now, If the email entered in blank then show the error message or else continue with the implemented feature.
             if (email.isEmpty()) {
@@ -65,7 +67,7 @@ class ForgotPasswordActivity : BaseActivity() {
      */
     private fun setupActionBar() {
 
-        setSupportActionBar(toolbar_forgot_password_activity)
+        setSupportActionBar(binding.toolbarForgotPasswordActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -73,7 +75,7 @@ class ForgotPasswordActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
 
-        toolbar_forgot_password_activity.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarForgotPasswordActivity.setNavigationOnClickListener { onBackPressed() }
     }
     // END
 }
