@@ -102,7 +102,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
                             FirestoreClass().uploadImageToCloudStorage(
                                 this@UserProfileActivity,
-                                mSelectedImageFileUri
+                                mSelectedImageFileUri,
+                                Constants.USER_PROFILE_IMAGE
                             )
                         } else {
 
@@ -241,18 +242,14 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         val userType= sharedPreferences.getString(Constants.LOGGED_IN_USERTYPE,"")
         if(userType.equals("Student",true))
-             startActivity(Intent(this@UserProfileActivity, StudentHomeActivity::class.java))
+             startActivity(Intent(this@UserProfileActivity, StudentDashboardActivity::class.java))
         else
             startActivity(Intent(this@UserProfileActivity, FacultyHomeActivity::class.java))
 
         finish()
     }
 
-    /**
-     * A function to notify the success result of image upload to the Cloud Storage.
-     *
-     * @param imageURL After successful upload the Firebase Cloud returns the URL.
-     */
+
     fun imageUploadSuccess(imageURL: String) {
 
         mUserProfileImageURL = imageURL

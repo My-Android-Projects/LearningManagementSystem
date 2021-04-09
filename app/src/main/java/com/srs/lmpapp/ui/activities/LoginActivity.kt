@@ -18,7 +18,7 @@ import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.User
 import com.srs.lmpapp.utils.Constants
 
-
+private const val CURRENT_USER = "currentUser"
 @Suppress("DEPRECATION")
 class LoginActivity : BaseActivity() {
 
@@ -26,7 +26,7 @@ class LoginActivity : BaseActivity() {
      * This function is auto created by Android when the Activity Class is created.
      */
     private lateinit var binding: ActivityLoginBinding
-
+    private  var currentUser:User?=null
     lateinit var destIntent:Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +37,6 @@ class LoginActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
-
-
-
-
         binding.tvRegister.setOnClickListener {
 
             // Launch the register screen when the user clicks on the text.
@@ -101,39 +96,23 @@ class LoginActivity : BaseActivity() {
                 OnCompleteListener<AuthResult>
                 { task ->
                     hideProgressDialog()
-                    if (task.isSuccessful) {
-                        /*val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser
-
-                        showErrorSnackBar("You are logged in successfully.", false)
-
-                        if(userType.equals("Student",true))
-                            destIntent=Intent(this@LoginActivity, StudentHomeActivity::class.java)
-                        else
-                            destIntent=Intent(this@LoginActivity, FacultyHomeActivity::class.java)
-                        destIntent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        destIntent.putExtra("user_id",firebaseUser.uid)
-                        destIntent.putExtra("email_id",email)
-                        destIntent.putExtra("userType",userType)
-
-                        startActivity(destIntent)
-                        finish()
-                        */
-                        FirestoreClass().getUserDetails(this@LoginActivity)
-                    }
-                    else{
+                    if (task.isSuccessful)
+                        FirestoreClass().getSnopshotDetails(this@LoginActivity)
+                    else
                         showErrorSnackBar(task.exception!!.message.toString(), true)
 
-                    }
+
                 }
             )
         }
 
     }
-    fun userLoggedInSuccess(user: User) {
+
+    /*fun userLoggedInSuccess(user: User) {
 
         // Hide the progress dialog.
         hideProgressDialog()
-
+        currentUser=user
         // Print the user details in the log as of now.
         Log.i("First Name: ", user.firstName)
         Log.i("Last Name: ", user.lastName)
@@ -141,20 +120,66 @@ class LoginActivity : BaseActivity() {
 
         // Redirect the user to Main Screen after log in.
         val userType=user.type
-        if(user.profileCompleted==0)
+       /* if(user.profileCompleted==0)
         {
-            destIntent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            destIntent = Intent(this@LoginActivity,UserProfileActivity::class.java)
         }
         else
         {
             if (userType.equals("Student", true))
-                destIntent = Intent(this@LoginActivity, StudentHomeActivity::class.java)
+                destIntent = Intent(this@LoginActivity, StudentDashboardActivity::class.java)
             else
                 destIntent = Intent(this@LoginActivity, FacultyHomeActivity::class.java)
-        }
+        }*/
+        if (userType.equals("Student", true))
+            destIntent = Intent(this@LoginActivity, StudentDashboardActivity::class.java)
+        else
+            destIntent = Intent(this@LoginActivity, AddCourseActivity::class.java)
+
         destIntent.putExtra(Constants.EXTRA_USER_DETAILS,user)
 
         startActivity(destIntent)
         finish()
     }
+   */
+
+    fun userLoggedInSuccess(user: User,totCredits:Int,totCourses:Int) {
+
+        // Hide the progress dialog.
+        hideProgressDialog()
+        currentUser=user
+        // Print the user details in the log as of now.
+        Log.i("First Name: ", user.firstName)
+        Log.i("Last Name: ", user.lastName)
+        Log.i("Email: ", user.email)
+        Log.i("totCredits: ", totCredits.toString())
+        Log.i("totCourses: ", totCourses.toString())
+        // Redirect the user to Main Screen after log in.
+        val userType=user.type
+        if(user.profileCompleted==0)
+         {
+             destIntent = Intent(this@LoginActivity,UserProfileActivity::class.java)
+         }
+         else
+         {
+             if (userType.equals("Student", true))
+                 destIntent = Intent(this@LoginActivity, StudentDashboardActivity::class.java)
+             else
+                 destIntent = Intent(this@LoginActivity, FacultyHomeActivity::class.java)
+         }
+        /*if (userType.equals("Student", true))
+            destIntent = Intent(this@LoginActivity, StudentDashboardActivity::class.java)
+        else
+            destIntent = Intent(this@LoginActivity, AddCourseActivity::class.java)
+*/
+        destIntent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+        destIntent.putExtra(Constants.TOT_COURSES,totCourses)
+        destIntent.putExtra(Constants.TOT_CREDITS,totCredits)
+        startActivity(destIntent)
+        finish()
+    }
+
+
+
+
 }

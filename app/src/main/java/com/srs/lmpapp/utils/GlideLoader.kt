@@ -20,12 +20,12 @@ class GlideLoader(val context: Context) {
     /**
      * A function to load image from URI for the user profile picture.
      */
-    fun loadUserPicture(imageURI: Uri, imageView: ImageView) {
+    fun loadUserPicture(imageURI: Any, imageView: ImageView) {
         try {
             // Load the user image in the ImageView.
             Glide
                 .with(context)
-                .load(Uri.parse(imageURI.toString())) // URI of the image
+                .load(imageURI) // URI of the image
                 .centerCrop() // Scale type of the image.
                 .placeholder(R.drawable.ic_user_placeholder) // A default place holder if image is failed to load.
                 .into(imageView) // the view in which the image will be loaded.
@@ -33,6 +33,18 @@ class GlideLoader(val context: Context) {
             e.printStackTrace()
         }
     }
-    // END
+
+    fun loadCoursePicture(image: Any, imageView: ImageView) {
+        try {
+            // Load the user image in the ImageView.
+            Glide
+                .with(context)
+                .load(image) // Uri or URL of the image
+                .centerCrop() // Scale type of the image.
+                .into(imageView) // the view in which the image will be loaded.
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
 }
 // END

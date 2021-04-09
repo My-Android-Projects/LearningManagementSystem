@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     tools:context=".ui.activities.StudentDashboardActivity"
+    android:layout_marginLeft="30dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <com.srs.lmpapp.utils.MSPTextViewBold
+            android:id="@+id/lblcoursename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Course"
+
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:padding="20dp"/>
+
+        <EditText
+            android:id="@+id/txtCourseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/lblcoursename"
+            android:ems="10"
+            android:hint="Enter course name"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:inputType="text"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:imeOptions="actionDone"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <com.srs.lmpapp.utils.MSPTextViewBold
+            android:id="@+id/lblCredits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Credits"
+            android:textSize="15sp"
+            android:textStyle="bold"
+
+            android:padding="20dp"
+            />
+
+        <Spinner
+            android:id="@+id/lstCredits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/lblCredits"
+            android:entries="@array/credits"
+            android:scrollbarSize="40dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <com.srs.lmpapp.utils.MSPTextViewBold
+            android:id="@+id/lblCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:padding="20dp"
+            />
+        <Spinner
+            android:id="@+id/lstCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/category"
+            android:layout_toRightOf="@+id/lblCategory"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <com.srs.lmpapp.utils.MSPTextViewBold
+            android:id="@+id/lblstart_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:padding="20dp"/>
+        <EditText
+            android:id="@+id/txtStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/02/2021"
+            android:layout_toRightOf="@+id/lblstart_date"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:focusableInTouchMode="false"
+            android:drawableRight="@drawable/ic_calendar"
+            android:textAlignment="center"
+            />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <com.srs.lmpapp.utils.MSPTextViewBold
+            android:id="@+id/lblend_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:padding="20dp"/>
+        <EditText
+            android:id="@+id/txtEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/02/2021"
+            android:layout_toRightOf="@+id/lblend_date"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:focusableInTouchMode="false"
+            android:drawableRight="@drawable/ic_calendar"
+            android:textAlignment="center"
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
+        <Button
+            android:id="@+id/btn_Search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="Search"
+            android:layout_margin="15dp"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+        <Button
+            android:id="@+id/btn_Clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"            android:layout_toRightOf="@+id/btn_Search"
+            android:text="Clear"
+            android:layout_margin="15dp"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+
+    </RelativeLayout>
+</LinearLayout>

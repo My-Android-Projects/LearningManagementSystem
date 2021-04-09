@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.EnrolledCourseDetailsActivity"
+    android:background="#fff">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_add_product_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/app_gradient_color_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/toolbar_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text="COURSE DETAILS"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/toolbar_title_text_size"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/llContent"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+                <ImageView
+                    android:id="@+id/imgCourseImage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="centerCrop"
+                    android:paddingRight="5dp"/>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4.5">
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/txtCourseName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Name of the Course"
+                        android:padding="8dp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        />
+
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/txtCourseCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Course Category"
+                        android:layout_below="@id/txtCourseName"
+                        android:padding="8dp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
+                        />
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/txtSchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="06/10/2021 - 07/15/2021"
+                        android:layout_below="@id/txtCourseCategory"
+                        android:padding="8dp"
+                        android:textStyle="bold"
+                        android:textColor="#357038"
+                        android:textSize="15sp"/>
+
+
+                </RelativeLayout>
+
+
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/llContent">
+                <com.srs.lmpapp.utils.MSPTextViewBold
+                    android:id="@+id/txtAboutTheCourseStatic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:padding="6dp"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp"
+                    android:text="About the Course"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/txtAboutTheCourseStatic"
+                    android:id="@+id/llAuthor">
+                    <com.srs.lmpapp.utils.MSPTextViewBold
+                        android:id="@+id/lblFaculty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="Author:"/>
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/txtFaculty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="Rajewari"/>
+                </LinearLayout>
+
+                <com.srs.lmpapp.utils.MSPTextViewBold
+                    android:id="@+id/txtCourseDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/llAuthor"
+                    android:padding="6dp"
+                    android:textSize="18sp"
+                    android:text="What you'll learn?"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btnEnroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_background"
+        android:text="Un-Enroll"
+        android:textColor="#ffff"
+        android:textStyle="bold"
+        android:textSize="19sp"/>
+
+
+</RelativeLayout>

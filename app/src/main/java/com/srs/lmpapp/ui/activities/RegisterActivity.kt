@@ -157,7 +157,7 @@ class RegisterActivity : BaseActivity() {
                                 userType,
                                 binding.etFirstName.text.toString().trim { it <= ' ' },
                                 binding.etLastName.text.toString().trim { it <= ' ' },
-                                binding.etLastName.text.toString().trim { it <= ' ' }
+                                binding.etEmail.text.toString().trim { it <= ' ' }
                             )
                             // END
 

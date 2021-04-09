@@ -9,21 +9,30 @@ import android.webkit.MimeTypeMap
 object Constants {
 
     const val TBL_USERS: String = "users"
+    const val TBL_COURSES: String = "courses"
+    const val TBL_ENROLLED_COURSES: String = "enrolled_courses"
     const val MYLMSAPP_PREFERENCES: String = "MyLMSAppPrefs"
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
-    const val LOGGED_IN_EMAIL: String= "logged_in_email"
+    const val LOGGED_IN_USER_EMAIL: String= "logged_in_user_email"
     const val LOGGED_IN_USERID:String="logged_in_userid"
-    const val  LOGGED_IN_PHONE:String="logged_in_phone"
+    const val  LOGGED_IN_USER_PHONE:String="logged_in_user+phone"
     const val LOGGED_IN_USERTYPE:String="logged_in_usertype"
+    const val LOGGED_IN_USER_CREDITS:String="logged_in_user+credit"
+    const val LOGGED_IN_USER_COURSES:String="logged_in_user_coursess"
+    const val CURRENT_COURSE_ID:String="current_course_id"
+    const val CURRENT_ENROLLED_COURSE_ID:String="current_course_id"
 
     const val EXTRA_USER_DETAILS:String="extra_user_details"
     const val READ_STORAGE_PERMISSION_CODE = 2
+ const val TOT_CREDITS:String="totcredits"
+    const val TOT_COURSES:String="totcourses"
 
 
     const val PICK_IMAGE_REQUEST_CODE = 2
 
 
-
+    const val TAKEN_BY: String = "takenby"
+    const val ENROLLED_BY: String = "enrolledby"
 
     // Constant variables for Gender
     const val MALE: String = "Male"
@@ -33,7 +42,7 @@ object Constants {
     const val MOBILE: String = "mobile"
     const val GENDER: String = "gender"
     const val IMAGE: String = "image"
-
+    const val COURSE_IMAGE: String = "Course_Iamge"
     // TODO Step 1: Add the constant database field for complete profile.
     // START
     const val COMPLETE_PROFILE: String = "profileCompleted"

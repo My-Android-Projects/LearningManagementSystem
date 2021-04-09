@@ -21,7 +21,7 @@ class StudentHomeActivity : AppCompatActivity() {
             getSharedPreferences(Constants.MYLMSAPP_PREFERENCES, Context.MODE_PRIVATE)
 
         val userId = sharedPreferences.getString(Constants.LOGGED_IN_USERID,"")
-        val emailId = sharedPreferences.getString(Constants.LOGGED_IN_EMAIL,"")
+        val emailId = sharedPreferences.getString(Constants.LOGGED_IN_USER_EMAIL,"")
         val userType= sharedPreferences.getString(Constants.LOGGED_IN_USERTYPE,"")
         val userName= sharedPreferences.getString(Constants.LOGGED_IN_USERNAME,"")
 

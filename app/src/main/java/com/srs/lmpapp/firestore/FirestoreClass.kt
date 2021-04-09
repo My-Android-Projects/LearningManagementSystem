@@ -5,24 +5,22 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.model.User
-import com.srs.lmpapp.ui.activities.LoginActivity
-import com.srs.lmpapp.ui.activities.RegisterActivity
-import com.srs.lmpapp.ui.activities.UserProfileActivity
+import com.srs.lmpapp.ui.activities.*
+import com.srs.lmpapp.ui.fragments.*
 import com.srs.lmpapp.utils.Constants
 
 class FirestoreClass {
     private val mFireStore=FirebaseFirestore.getInstance()
-    // TODO Step 7: Create a function to access the Cloud Firestore and create a collection.
-    // START
-    /**
-     * A function to make an entry of the registered user in the FireStore database.
-     */
+
     fun registerUser(activity: RegisterActivity, userInfo: User) {
 
         // The "users" is collection name. If the collection is already created then it will not create the same one again.
@@ -46,6 +44,7 @@ class FirestoreClass {
             }
     }
 
+
     fun getCurrentUserID(): String {
         // An Instance of currentUser using FirebaseAuth
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -58,6 +57,154 @@ class FirestoreClass {
 
         return currentUserID
     }
+
+
+    fun getCourseDetails(activity: Activity,courseID:String) {
+
+        // Here we pass the collection name from which we wants the data.
+        mFireStore.collection(Constants.TBL_COURSES)
+            // The document id to get the Fields of user.
+            .document(courseID)
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.i(activity.javaClass.simpleName, document.toString())
+
+                // Here we have received the document snapshot which is converted into the User Data model object.
+                val course = document.toObject(Course::class.java)!!
+                course?.id = courseID
+                val sharedPreferences =
+                    activity.getSharedPreferences(
+                        Constants.MYLMSAPP_PREFERENCES,
+                        Context.MODE_PRIVATE
+                    )
+
+
+                when (activity) {
+                    is CourseDetailsActivity -> {
+                        // Call a function of base activity for transferring the result to it.
+                        activity.courseDetailsSuccess(course)
+
+                    }
+                    is EnrolledCourseDetailsActivity->
+                    {
+                        activity.courseDetailsSuccess(course)
+                    }
+
+                }
+                // END
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error. And print the error in log.
+                when (activity) {
+                    is CourseDetailsActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is EnrolledCourseDetailsActivity->
+                    {
+                        activity.hideProgressDialog()
+                    }
+
+                }
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while getting user details.",
+                    e
+                )
+            }
+    }
+
+    fun getSnopshotDetails(fragment:Fragment)
+    {
+        var totcredits:Int=0
+        var totcourses:Int=0
+        val currentUserID=getCurrentUserID()
+        var user:User?=null
+        mFireStore.collection(Constants.TBL_USERS)
+                    .document(currentUserID).get().addOnSuccessListener { document ->
+                  user = document.toObject(User::class.java)!!
+             }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error. And print the error in log.
+                when (fragment) {
+                    is DashboardFragment -> { fragment.hideProgressDialog()}
+                }
+                Log.e( fragment.javaClass.simpleName,"Error while getting user details.",e)
+            }
+
+        mFireStore.collection(Constants.TBL_COURSES).whereArrayContains("enrolledby",currentUserID).get()
+            .addOnSuccessListener { document->
+                val courseList: ArrayList<Course> = ArrayList()
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+                    val course = i.toObject(Course::class.java)
+                    course?.id = i.id
+                    if (course?.credits!= null) {
+                        totcredits = totcredits + course.credits.toInt()
+                        totcourses=totcourses+1
+                    }
+                }
+                when (fragment) {
+                    is DashboardFragment -> {
+
+                            fragment.getUserDetailsSuccess(user = user!!, totcredits , totcourses)
+                                          }
+
+                }
+            }
+            .addOnFailureListener{e->
+                when (fragment) {
+                    is DashboardFragment -> {fragment.hideProgressDialog() }
+                }
+            }
+    }
+
+    fun getSnopshotDetails(activity:Activity)
+    {
+        var totcredits:Int=0
+        var totcourses:Int=0
+        val currentUserID=getCurrentUserID()
+        var user:User?=null
+        mFireStore.collection(Constants.TBL_USERS)
+            .document(currentUserID).get().addOnSuccessListener { document ->
+                user = document.toObject(User::class.java)!!
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error. And print the error in log.
+                when (activity) {
+                    is LoginActivity -> { activity.hideProgressDialog()}
+                }
+                Log.e( activity.javaClass.simpleName,"Error while getting user details.",e)
+            }
+
+        mFireStore.collection(Constants.TBL_COURSES).whereArrayContains("enrolledby",currentUserID).get()
+            .addOnSuccessListener { document->
+                val courseList: ArrayList<Course> = ArrayList()
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+                    val course = i.toObject(Course::class.java)
+                    course?.id = i.id
+                    if (course?.credits!= null) {
+                        totcredits = totcredits + course.credits.toInt()
+                        totcourses=totcourses+1
+                    }
+                }
+                when (activity) {
+                    is LoginActivity -> {
+
+                        activity.userLoggedInSuccess(user = user!!,  totCredits=totcredits,totCourses=totcourses)
+                    }
+
+                }
+            }
+            .addOnFailureListener{e->
+                when (activity) {
+                    is LoginActivity -> {activity.hideProgressDialog() }
+                }
+            }
+    }
+
 
     fun getUserDetails(activity: Activity) {
 
@@ -85,13 +232,14 @@ class FirestoreClass {
                     "${user.firstName} ${user.lastName}"
                 )
                 editor.putString(
-                    Constants.LOGGED_IN_EMAIL,
+                    Constants.LOGGED_IN_USER_EMAIL,
                     "${user.email}"
                 )
                 editor.putString(
-                    Constants.LOGGED_IN_PHONE,
+                    Constants.LOGGED_IN_USER_PHONE,
                     " ${user.mobile}"
                 )
+
                 editor.putString(
                     Constants.LOGGED_IN_USERID,
                     "${user.id}"
@@ -106,8 +254,9 @@ class FirestoreClass {
                 when (activity) {
                     is LoginActivity -> {
                         // Call a function of base activity for transferring the result to it.
-                        activity.userLoggedInSuccess(user)
+                        activity.userLoggedInSuccess(user,0,0)
                     }
+
 
                 }
                 // END
@@ -118,6 +267,7 @@ class FirestoreClass {
                     is LoginActivity -> {
                         activity.hideProgressDialog()
                     }
+
                 }
 
                 Log.e(
@@ -127,12 +277,49 @@ class FirestoreClass {
                 )
             }
     }
-    /**
-     * A function to update the user profile data into the database.
-     *
-     * @param activity The activity is used for identifying the Base activity to which the result is passed.
-     * @param userHashMap HashMap of fields which are to be updated.
-     */
+
+    fun getUserDetails(fragment: Fragment) {
+
+        // Here we pass the collection name from which we wants the data.
+        mFireStore.collection(Constants.TBL_USERS)
+            // The document id to get the Fields of user.
+            .document(getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.i(fragment.javaClass.simpleName, document.toString())
+
+                // Here we have received the document snapshot which is converted into the User Data model object.
+                val user = document.toObject(User::class.java)!!
+
+                when (fragment) {
+                    is DashboardFragment -> {
+                        // Call a function of base activity for transferring the result to it.
+                        fragment.getUserDetailsSuccess(user,0,0)
+                    }
+
+                }
+                // END
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error. And print the error in log.
+                when (fragment) {
+                    is DashboardFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+
+
+                }
+
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "Error while getting user details.",
+                    e
+                )
+            }
+    }
+
+
     fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>) {
         // Collection Name
         mFireStore.collection(Constants.TBL_USERS)
@@ -168,11 +355,11 @@ class FirestoreClass {
     }
 
     // A function to upload the image to the cloud storage.
-    fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?) {
+    fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?, imageType: String) {
 
         //getting the storage reference
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
+            imageType + System.currentTimeMillis() + "."
                     + Constants.getFileExtension(
                 activity,
                 imageFileURI
@@ -198,6 +385,10 @@ class FirestoreClass {
                             is UserProfileActivity -> {
                                 activity.imageUploadSuccess(uri.toString())
                             }
+
+                            is AddCourseActivity -> {
+                                activity.imageUploadSuccess(uri.toString())
+                            }
                         }
                     }
             }
@@ -206,6 +397,10 @@ class FirestoreClass {
                 // Hide the progress dialog if there is any error. And print the error in log.
                 when (activity) {
                     is UserProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+
+                    is AddCourseActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -217,4 +412,259 @@ class FirestoreClass {
                 )
             }
     }
+
+    fun uploadCourseDetails(activity: AddCourseActivity,  courseInfo: Course)
+    {
+
+        mFireStore.collection(Constants.TBL_COURSES)
+            .document()
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(courseInfo, SetOptions.merge())
+            .addOnSuccessListener {
+
+                        activity.courseUploadSuccess()
+
+                     }
+
+                    .addOnFailureListener{ e ->
+                        activity.hideProgressDialog()
+                        Log.e(activity.javaClass.simpleName,"Error while uploading the courses details.",e)
+                    }
+
+
+
+    }
+
+    fun getCoursesList(fragment: Fragment,filterMap:HashMap<String,Any>) {
+        // The collection name for PRODUCTS
+        val currentUserID=getCurrentUserID()
+        mFireStore.collection(Constants.TBL_COURSES).whereNotIn("enrolledby", listOf(currentUserID))
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of boards in the form of documents.
+                Log.e("Courses List", document.documents.toString())
+
+                // Here we have created a new instance for Products ArrayList.
+                val courseList: ArrayList<Course> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+
+                    val course = i.toObject(Course::class.java)
+                    course?.id=i.id
+                    course?.let { courseList.add(it) }
+                }
+
+                when (fragment) {
+                    is CourseSearchResultFragment -> {
+                        fragment.successCoursesListFromFireStore(courseList)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error based on the base class instance.
+                when (fragment) {
+                    is CourseSearchResultFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
+                Log.e("Get Product List", "Error while getting product list.", e)
+            }
+    }
+    fun getCoursesListForFaculty(fragment: Fragment) {
+        // The collection name for PRODUCTS
+        mFireStore.collection(Constants.TBL_COURSES)
+
+            .whereEqualTo(Constants.TAKEN_BY, getCurrentUserID())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of boards in the form of documents.
+                Log.e("Courses List", document.documents.toString())
+
+                val courseList: ArrayList<Course> = ArrayList()
+
+                for (i in document.documents) {
+
+                    val course:Course ?= i.toObject(Course::class.java)
+                    course?.id=i.id
+                    course?.let { courseList.add(it) }
+                }
+
+                when (fragment) {
+                    is MyCourseForFacultyFragment -> {
+                        fragment.successCoursesListFromFireStore(courseList)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error based on the base class instance.
+                when (fragment) {
+                    is MyCourseForFacultyFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
+                Log.e("Get Product List", "Error while getting product list.", e)
+            }
+    }
+
+
+    fun getEnrolledCoursesListForStudent(fragment: Fragment) {
+
+        mFireStore.collection(Constants.TBL_COURSES)
+
+            .whereArrayContains(Constants.ENROLLED_BY, getCurrentUserID())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of boards in the form of documents.
+                Log.e("Enrolled Courses List", document.documents.toString())
+
+                // Here we have created a new instance for Products ArrayList.
+                val enrolledCourseList: ArrayList<Course> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+
+                    val enrolledcourse = i.toObject(Course::class.java)
+                    enrolledcourse?.id=i.id
+                    enrolledcourse?.let { enrolledCourseList.add(it) }
+                }
+
+                when (fragment) {
+                    is MyCoursesFragment -> {
+                        fragment.successEnrolledCoursesListFromFireStore(enrolledCourseList)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error based on the base class instance.
+                when (fragment) {
+                    is MyCoursesFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
+                Log.e("Get Product List", "Error while getting product list.", e)
+            }
+    }
+    fun enrollCourse(activity:CourseDetailsActivity, courseId:String)
+    {
+
+
+        val currentUserId:String=getCurrentUserID()
+
+        var courseDataHashMap=HashMap<String,Any>()
+        courseDataHashMap.put("enrolledby", FieldValue.arrayUnion(currentUserId))
+        courseDataHashMap.put("remainingseats",FieldValue.increment(-1))
+
+        mFireStore.collection(Constants.TBL_COURSES)
+            .document(courseId)
+            .update(courseDataHashMap)
+            .addOnSuccessListener {
+
+                // Notify the success result.
+                when (activity) {
+                    is CourseDetailsActivity -> {
+                        // Call a function of base activity for transferring the result to it.
+                        activity.allDetailsUpdatedSuccessfully()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+
+                when (activity) {
+                    is CourseDetailsActivity -> {
+                        // Hide the progress dialog if there is any error. And print the error in log.
+                        activity.hideProgressDialog()
+                    }
+                }
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the user details.",
+                    e
+                )
+            }
+    }
+
+    fun unEenrollCourse(activity:EnrolledCourseDetailsActivity, courseId:String)
+    {
+
+
+        val currentUserId:String=getCurrentUserID()
+
+        var courseDataHashMap=HashMap<String,Any>()
+        courseDataHashMap.put("enrolledby", FieldValue.arrayRemove(currentUserId))
+        courseDataHashMap.put("remainingseats",FieldValue.increment(1))
+
+        mFireStore.collection(Constants.TBL_COURSES)
+            .document(courseId)
+            .update(courseDataHashMap)
+            .addOnSuccessListener {
+
+                // Notify the success result.
+                when (activity) {
+                    is EnrolledCourseDetailsActivity -> {
+                        // Call a function of base activity for transferring the result to it.
+                        activity.allDetailsUpdatedSuccessfully()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+
+                when (activity) {
+                    is EnrolledCourseDetailsActivity -> {
+                        // Hide the progress dialog if there is any error. And print the error in log.
+                        activity.hideProgressDialog()
+                    }
+                }
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the user details.",
+                    e
+                )
+            }
+    }
+   /* fun unEnrollCourse(activity:EnrolledCourseDetailsActivity, courseInfo: EnrolledCourseInfo)
+    {
+
+        val writeBatch = mFireStore.batch()
+
+        mFireStore.collection(Constants.TBL_COURSES).document(courseInfo.courseid).
+        //increase remaining seats by one in course table and remove current user id from enolledby list
+        val courseHashMap=HashMap<String,Any>()
+        val remSeats:Int=courseInfo?.remainingseats?.toInt()+1
+        courseHashMap.put("remainingseats",remSeats.toString())
+       var documentReference=mFireStore.collection(Constants.TBL_COURSES).document(courseInfo.courseid)
+         writeBatch.update(documentReference, courseHashMap)
+
+        //subtract credits from user table & decrease the  course count by 1
+        val userHashMap=HashMap<String,Any>()
+        val totcredits=courseInfo.totcredits.toInt()-courseInfo.credits
+        val totcourses=courseInfo.totcourses.toInt()-1
+        userHashMap.put("totcredits",totcredits.toString())
+        userHashMap.put("totcourses",totcourses.toString())
+        documentReference=mFireStore.collection(Constants.TBL_USERS).document(FirestoreClass().getCurrentUserID())
+        writeBatch.update(documentReference, userHashMap)
+
+        writeBatch.commit().addOnSuccessListener {
+
+            activity.allDetailsUpdatedSuccessfully()
+
+        }.addOnFailureListener { e ->
+            // Here call a function of base activity for transferring the result to it.
+            activity.hideProgressDialog()
+
+            Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating all the details after order placed.",
+                    e
+            )
+        }
+
+
+    }*/
+
 }

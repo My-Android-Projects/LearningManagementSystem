@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.srs.lmpapp">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.UserProfileActivity"></activity>
+        <activity android:name=".ui.activities.EnrolledCourseDetailsActivity"
+
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.activities.CourseDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.activities.AddCourseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.activities.StudentDashboardActivity"
+            android:label="@string/title_activity_dashboard" />
+        <activity android:name=".ui.activities.UserProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.activities.StudentHomeActivity" />
         <activity android:name=".ui.activities.FacultyHomeActivity" />
         <activity
@@ -35,7 +52,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.activities.BaseActivity" />
-        <activity android:name=".ui.activities.MainActivity" />
     </application>
 
 </manifest>
