@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="category">
+        <item></item>
     <item>Technology</item>
     <item>Management</item>
     <item>Physics</item>

@@ -2,7 +2,9 @@ package com.srs.lmpapp.ui.fragments
 
 
 import android.app.Dialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.srs.lmpapp.R
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.User
@@ -22,6 +24,7 @@ open class BaseFragment : Fragment() {
     /**
      * This function is used to show the progress dialog with the title and message to user.
      */
+
     fun showProgressDialog(text: String) {
         mProgressDialog = Dialog(requireActivity())
 

@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/navigation_faculty_addcourses"
         android:name="com.srs.lmpapp.ui.fragments.FacultyAddCourses"
-        android:label="@string/title_coursesearch"
+        android:label="Add Courses"
         tools:layout="@layout/fragment_faculty_add_courses" />
 
 

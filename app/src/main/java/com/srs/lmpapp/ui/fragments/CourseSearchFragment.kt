@@ -11,10 +11,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProviders
 import com.srs.lmpapp.R
 import com.srs.lmpapp.`interface`.CourseSearchDataCommunicator
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
+import com.srs.lmpapp.utils.Constants
+import com.srs.lmpapp.utils.SharedViewModel
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -31,7 +34,7 @@ class CourseSearchFragment : BaseFragment() {
     lateinit var courseSearchDataCommunicator: CourseSearchDataCommunicator
     lateinit var txtCourseCategory:String
     lateinit var txtCourseCredits:String
-
+    private lateinit var model: SharedViewModel
     private var param1: String? = null
     private var param2: String? = null
 
@@ -40,6 +43,8 @@ class CourseSearchFragment : BaseFragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+
+
         }
     }
 
@@ -51,6 +56,10 @@ class CourseSearchFragment : BaseFragment() {
 
         // Inflate the layout for this fragment
         val  view= inflater.inflate(R.layout.fragment_coursesearch, container, false)
+        model = activity?.run {
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
         btnCourseSearch=view.findViewById(R.id.btn_Search)
         txtStartDate=view.findViewById(R.id.txtStartDate)
         txtEndDate=view.findViewById(R.id.txtEndDate)
@@ -93,10 +102,19 @@ class CourseSearchFragment : BaseFragment() {
                     txtCourseCredits
 
             )*/
+            var filterData:HashMap<String,Any> = HashMap()
 
-          getFragmentManager()?.beginTransaction()
+                filterData.put(Constants.FILTER_COURSE_CREDITS, txtCourseCredits)
+
+            filterData.put(Constants.FILTER_COURSE_CATEGORY,txtCourseCategory)
+
+
+
+            model.applyFilter(filterData)
+            getFragmentManager()?.beginTransaction()
                     ?.replace(R.id.nav_host_fragment, CourseSearchResultFragment())
                     ?.addToBackStack("Course Search")
+
                     ?.commit()
 
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -564,11 +565,26 @@ class FirestoreClass {
 
     }
 
-    fun getCoursesList(fragment: Fragment,filterMap:HashMap<String,Any>) {
+    fun getCoursesList(fragment: Fragment,credits:String,category:String) {
         // The collection name for PRODUCTS
         val currentUserID=getCurrentUserID()
-        mFireStore.collection(Constants.TBL_COURSES).whereNotIn("enrolledby", listOf(currentUserID))
-            .get() // Will get the documents snapshots.
+        var coursesRef:Query?=null
+        when
+        {
+        credits.isNotEmpty() && category.isNotEmpty() ->coursesRef=mFireStore.collection(Constants.TBL_COURSES)
+            .whereEqualTo(Constants.FILTER_COURSE_CREDITS,credits.toInt())
+            .whereEqualTo(Constants.FILTER_COURSE_CATEGORY,category)
+            credits.isNotEmpty() ->coursesRef=mFireStore.collection(Constants.TBL_COURSES)
+                .whereEqualTo(Constants.FILTER_COURSE_CREDITS,credits.toInt())
+            category.isNotEmpty()->coursesRef=mFireStore.collection(Constants.TBL_COURSES)
+                .whereEqualTo(Constants.FILTER_COURSE_CATEGORY,category)
+
+            else->coursesRef=mFireStore.collection(Constants.TBL_COURSES)
+
+
+        }
+
+         coursesRef.get() // Will get the documents snapshots.
             .addOnSuccessListener { document ->
 
                 // Here we get the list of boards in the form of documents.
@@ -582,7 +598,13 @@ class FirestoreClass {
 
                     val course = i.toObject(Course::class.java)
                     course?.id=i.id
-                    course?.let { courseList.add(it) }
+                    val let = course?.let {
+
+                        if (!course.enrolledby!!.contains(currentUserID))
+                        courseList.add(it)
+
+                    }
+
                 }
 
                 when (fragment) {

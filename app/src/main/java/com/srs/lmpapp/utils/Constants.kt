@@ -49,7 +49,8 @@ object Constants {
     // END
 
     const val USER_PROFILE_IMAGE:String = "User_Profile_Image"
-
+    const val FILTER_COURSE_CREDITS:String="credits"
+    const val FILTER_COURSE_CATEGORY:String ="category"
 
     /**
      * A function for user profile image selection from phone storage.
