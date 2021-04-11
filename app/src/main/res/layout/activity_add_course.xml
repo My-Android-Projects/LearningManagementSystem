@@ -30,6 +30,17 @@
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
+    <ScrollView
+        android:id="@+id/llScrooView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -60,6 +71,8 @@
         android:src="@drawable/ic_vector_add_photo" />
     </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_coursename"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -79,17 +92,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_coursecategory"
+        android:id="@+id/til_courseDesc"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:hint="category"
+        android:hint="description"
         >
         <com.srs.lmpapp.utils.MSPEditText
-            android:id="@+id/txtCourseCategory"
+            android:id="@+id/txtCourseDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
@@ -99,20 +112,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:weightSum="10"
         >
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_coursecategory"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="6"
+            android:hint="category"
+            >
+            <com.srs.lmpapp.utils.MSPEditText
+                android:id="@+id/txtCourseCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
+                android:imeOptions="actionDone"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
      <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_coursecredits"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:hint="credits"
-
-
-        >
+         android:layout_weight="2"
+        android:hint="credits">
         <com.srs.lmpapp.utils.MSPEditText
             android:id="@+id/txtCourseCredits"
             android:layout_width="match_parent"
@@ -122,32 +152,16 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_courseduration"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="16dp"
-        android:hint="duration"
-        >
-        <com.srs.lmpapp.utils.MSPEditText
-            android:id="@+id/txtCourseDuration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_totseats"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="16dp"
+            android:layout_weight="2"
             android:hint="tot.seats"
 
             >
@@ -206,18 +220,19 @@
 
     </LinearLayout>
 
+
     <com.srs.lmpapp.utils.MSPButton
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+
             android:layout_marginStart="16dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_background"
+
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
             android:paddingTop="@dimen/btn_padding"
             android:paddingBottom="@dimen/btn_padding"
             android:text="@string/btn_lbl_submit"
@@ -225,7 +240,8 @@
             android:textSize="@dimen/btn_textSize" />
 
 
-
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

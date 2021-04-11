@@ -1,7 +1,9 @@
 package com.srs.lmpapp.ui.activities
 
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -156,6 +158,36 @@ class LoginActivity : BaseActivity() {
         Log.i("totCourses: ", totCourses.toString())
         // Redirect the user to Main Screen after log in.
         val userType=user.type
+        val sharedPreferences =
+            getSharedPreferences(
+                Constants.MYLMSAPP_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
+
+        // Create an instance of the editor which is help us to edit the SharedPreference.
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString(
+            Constants.LOGGED_IN_USERNAME,
+            "${user.firstName} ${user.lastName}"
+        )
+        editor.putString(
+            Constants.LOGGED_IN_USER_EMAIL,
+            "${user.email}"
+        )
+        editor.putString(
+            Constants.LOGGED_IN_USER_PHONE,
+            " ${user.mobile}"
+        )
+
+        editor.putString(
+            Constants.LOGGED_IN_USERID,
+            "${user.id}"
+        )
+        editor.putString(
+            Constants.LOGGED_IN_USERTYPE,
+            "${user.type}"
+        )
+        editor.apply()
         if(user.profileCompleted==0)
          {
              destIntent = Intent(this@LoginActivity,UserProfileActivity::class.java)
@@ -165,7 +197,7 @@ class LoginActivity : BaseActivity() {
              if (userType.equals("Student", true))
                  destIntent = Intent(this@LoginActivity, StudentDashboardActivity::class.java)
              else
-                 destIntent = Intent(this@LoginActivity, FacultyHomeActivity::class.java)
+                 destIntent = Intent(this@LoginActivity, FacultyDashboardActivity::class.java)
          }
         /*if (userType.equals("Student", true))
             destIntent = Intent(this@LoginActivity, StudentDashboardActivity::class.java)

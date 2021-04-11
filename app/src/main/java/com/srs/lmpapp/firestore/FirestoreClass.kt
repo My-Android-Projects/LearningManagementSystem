@@ -114,7 +114,7 @@ class FirestoreClass {
                 )
             }
     }
-
+/*
     fun getSnopshotDetails(fragment:Fragment)
     {
         var totcredits:Int=0
@@ -159,7 +159,7 @@ class FirestoreClass {
                 }
             }
     }
-
+*/
     fun getSnopshotDetails(activity:Activity)
     {
         var totcredits:Int=0
@@ -167,42 +167,172 @@ class FirestoreClass {
         val currentUserID=getCurrentUserID()
         var user:User?=null
         mFireStore.collection(Constants.TBL_USERS)
-            .document(currentUserID).get().addOnSuccessListener { document ->
+            .document(currentUserID).get()
+            .addOnSuccessListener { document ->
                 user = document.toObject(User::class.java)!!
+
+
+
+                if (user?.type.equals("Student", true)) {
+                    mFireStore.collection(Constants.TBL_COURSES)
+                        .whereArrayContains("enrolledby", currentUserID).get()
+                        .addOnSuccessListener { document ->
+                            val courseList: ArrayList<Course> = ArrayList()
+                            // A for loop as per the list of documents to convert them into Products ArrayList.
+                            for (i in document.documents) {
+                                val course = i.toObject(Course::class.java)
+                                course?.id = i.id
+                                if (course?.credits != null) {
+                                    totcredits = totcredits + course.credits.toInt()
+                                    totcourses = totcourses + 1
+                                }
+                            }
+                            when (activity) {
+                                is LoginActivity -> {
+
+                                    activity.userLoggedInSuccess(
+                                        user = user!!,
+                                        totCredits = totcredits,
+                                        totCourses = totcourses
+                                    )
+                                }
+
+                            }
+                        }
+
+                } else {
+                    mFireStore.collection(Constants.TBL_COURSES)
+                        .whereEqualTo("takenby", currentUserID).get()
+                        .addOnSuccessListener { document ->
+                            val courseList: ArrayList<Course> = ArrayList()
+                            // A for loop as per the list of documents to convert them into Products ArrayList.
+                            for (i in document.documents) {
+                                val course = i.toObject(Course::class.java)
+                                course?.id = i.id
+                                if (course?.credits != null) {
+                                    totcredits = totcredits + course.credits.toInt()
+                                    totcourses = totcourses + 1
+                                }
+                            }
+                            when (activity) {
+                                is LoginActivity -> {
+
+                                    activity.userLoggedInSuccess(
+                                        user = user!!,
+                                        totCredits = totcredits,
+                                        totCourses = totcourses
+                                    )
+                                }
+
+                            }
+                        }
+                }
+            }
+                .addOnFailureListener { e ->
+                    when (activity) {
+                        is LoginActivity -> {
+                            activity.hideProgressDialog()
+                        }
+                    }
+                }
+
+    }
+    fun getSnopshotDetails(fragment:Fragment)
+    {
+        var totcredits:Int=0
+        var totcourses:Int=0
+        val currentUserID=getCurrentUserID()
+        var user:User?=null
+        mFireStore.collection(Constants.TBL_USERS)
+            .document(currentUserID).get()
+            .addOnSuccessListener { document ->
+                user = document.toObject(User::class.java)!!
+
+
+
+                if (user?.type.equals("Student", true)) {
+                    mFireStore.collection(Constants.TBL_COURSES)
+                        .whereArrayContains("enrolledby", currentUserID).get()
+                        .addOnSuccessListener { document ->
+                            val courseList: ArrayList<Course> = ArrayList()
+                            // A for loop as per the list of documents to convert them into Products ArrayList.
+                            for (i in document.documents) {
+                                val course = i.toObject(Course::class.java)
+                                course?.id = i.id
+                                if (course?.credits != null) {
+                                    totcredits = totcredits + course.credits.toInt()
+                                    totcourses = totcourses + 1
+                                }
+                            }
+                            when (fragment) {
+                                is DashboardFragment -> {
+
+                                    fragment.getUserDetailsSuccess(
+                                        user = user!!,
+                                        totcredits = totcredits,
+                                        totcourses = totcourses
+                                    )
+                                }
+                                is FacultyDashboardFragment
+                                -> {
+
+                                    fragment.getUserDetailsSuccess(
+                                        user = user!!,
+                                        totcredits = totcredits,
+                                        totcourses = totcourses
+                                    )
+                                }
+
+                            }
+                        }
+
+                } else {
+                    mFireStore.collection(Constants.TBL_COURSES)
+                        .whereEqualTo("takenby", currentUserID).get()
+                        .addOnSuccessListener { document ->
+                            val courseList: ArrayList<Course> = ArrayList()
+                            // A for loop as per the list of documents to convert them into Products ArrayList.
+                            for (i in document.documents) {
+                                val course = i.toObject(Course::class.java)
+                                course?.id = i.id
+                                if (course?.credits != null) {
+                                    totcredits = totcredits + course.credits.toInt()
+                                    totcourses = totcourses + 1
+                                }
+                            }
+                            when (fragment) {
+                                is DashboardFragment -> {
+
+                                    fragment.getUserDetailsSuccess(
+                                        user = user!!,
+                                        totcredits = totcredits,
+                                        totcourses = totcourses
+                                    )
+                                }
+                                is FacultyDashboardFragment -> {
+
+                                    fragment.getUserDetailsSuccess(
+                                        user = user!!,
+                                        totcredits = totcredits,
+                                        totcourses = totcourses
+                                    )
+                                }
+
+                            }
+                        }
+                }
             }
             .addOnFailureListener { e ->
-                // Hide the progress dialog if there is any error. And print the error in log.
-                when (activity) {
-                    is LoginActivity -> { activity.hideProgressDialog()}
-                }
-                Log.e( activity.javaClass.simpleName,"Error while getting user details.",e)
-            }
-
-        mFireStore.collection(Constants.TBL_COURSES).whereArrayContains("enrolledby",currentUserID).get()
-            .addOnSuccessListener { document->
-                val courseList: ArrayList<Course> = ArrayList()
-                // A for loop as per the list of documents to convert them into Products ArrayList.
-                for (i in document.documents) {
-                    val course = i.toObject(Course::class.java)
-                    course?.id = i.id
-                    if (course?.credits!= null) {
-                        totcredits = totcredits + course.credits.toInt()
-                        totcourses=totcourses+1
+                when (fragment) {
+                    is DashboardFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                    is FacultyDashboardFragment -> {
+                        fragment.hideProgressDialog()
                     }
                 }
-                when (activity) {
-                    is LoginActivity -> {
-
-                        activity.userLoggedInSuccess(user = user!!,  totCredits=totcredits,totCourses=totcourses)
-                    }
-
-                }
             }
-            .addOnFailureListener{e->
-                when (activity) {
-                    is LoginActivity -> {activity.hideProgressDialog() }
-                }
-            }
+
     }
 
 
@@ -249,8 +379,7 @@ class FirestoreClass {
                     "${user.type}"
                 )
                 editor.apply()
-                // TODO Step 6: Pass the result to the Login Activity.
-                // START
+
                 when (activity) {
                     is LoginActivity -> {
                         // Call a function of base activity for transferring the result to it.
@@ -493,7 +622,10 @@ class FirestoreClass {
                 }
 
                 when (fragment) {
-                    is MyCourseForFacultyFragment -> {
+                    is FacultyMyCoursesFragment -> {
+                        fragment.successCoursesListFromFireStore(courseList)
+                    }
+                    is FacultyAddCourses->{
                         fragment.successCoursesListFromFireStore(courseList)
                     }
                 }
@@ -501,7 +633,10 @@ class FirestoreClass {
             .addOnFailureListener { e ->
                 // Hide the progress dialog if there is any error based on the base class instance.
                 when (fragment) {
-                    is MyCourseForFacultyFragment -> {
+                    is FacultyMyCoursesFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                    is FacultyAddCourses -> {
                         fragment.hideProgressDialog()
                     }
                 }
@@ -588,7 +723,7 @@ class FirestoreClass {
             }
     }
 
-    fun unEenrollCourse(activity:EnrolledCourseDetailsActivity, courseId:String)
+    fun unEnrollCourse(activity:EnrolledCourseDetailsActivity, courseId:String)
     {
 
 
@@ -609,6 +744,7 @@ class FirestoreClass {
                         // Call a function of base activity for transferring the result to it.
                         activity.allDetailsUpdatedSuccessfully()
                     }
+
                 }
             }
             .addOnFailureListener { e ->
@@ -618,6 +754,7 @@ class FirestoreClass {
                         // Hide the progress dialog if there is any error. And print the error in log.
                         activity.hideProgressDialog()
                     }
+
                 }
 
                 Log.e(
@@ -627,44 +764,87 @@ class FirestoreClass {
                 )
             }
     }
-   /* fun unEnrollCourse(activity:EnrolledCourseDetailsActivity, courseInfo: EnrolledCourseInfo)
+    fun getStudentDetails(activity:ViewStudentDetailsActivity, courseId:String)
     {
+        val studentList:ArrayList<User> = ArrayList()
+        mFireStore.collection(Constants.TBL_COURSES).document(courseId)
+            .get()
+            .addOnSuccessListener {document ->
+                val course = document.toObject(Course::class.java)!!
+                course?.id = courseId
+                   val enrolledBy:List<String> = course.enrolledby!!
 
-        val writeBatch = mFireStore.batch()
+                    if(enrolledBy.size!=0)
+                    {
 
-        mFireStore.collection(Constants.TBL_COURSES).document(courseInfo.courseid).
-        //increase remaining seats by one in course table and remove current user id from enolledby list
-        val courseHashMap=HashMap<String,Any>()
-        val remSeats:Int=courseInfo?.remainingseats?.toInt()+1
-        courseHashMap.put("remainingseats",remSeats.toString())
-       var documentReference=mFireStore.collection(Constants.TBL_COURSES).document(courseInfo.courseid)
-         writeBatch.update(documentReference, courseHashMap)
+                        mFireStore.collection(Constants.TBL_USERS).whereIn("id",enrolledBy)
+                            .get()
+                            .addOnSuccessListener { document ->
+                                Log.e("Students List", document.documents.toString())
 
-        //subtract credits from user table & decrease the  course count by 1
-        val userHashMap=HashMap<String,Any>()
-        val totcredits=courseInfo.totcredits.toInt()-courseInfo.credits
-        val totcourses=courseInfo.totcourses.toInt()-1
-        userHashMap.put("totcredits",totcredits.toString())
-        userHashMap.put("totcourses",totcourses.toString())
-        documentReference=mFireStore.collection(Constants.TBL_USERS).document(FirestoreClass().getCurrentUserID())
-        writeBatch.update(documentReference, userHashMap)
 
-        writeBatch.commit().addOnSuccessListener {
+                                for (i in document.documents) {
 
-            activity.allDetailsUpdatedSuccessfully()
+                                    val student = i.toObject(User::class.java)!!
+                                    studentList.add(student)
+                                }
+                                when(activity)
+                                {
+                                    is ViewStudentDetailsActivity-> {
+                                        activity.successStudentList(studentList)
+                                    }
+                                }
+                            }
+                                .addOnFailureListener { e ->
+                                    when (activity) {
+                                        is ViewStudentDetailsActivity -> {
+                                            activity.hideProgressDialog()
+                                        }
+                                    }
 
-        }.addOnFailureListener { e ->
-            // Here call a function of base activity for transferring the result to it.
-            activity.hideProgressDialog()
+                                    Log.e(activity.javaClass.simpleName,"Error while updating the user details.",e)
+                                }
+                                }
 
-            Log.e(
+
+
+            }
+            .addOnFailureListener { e ->
+                when (activity) {
+                    is ViewStudentDetailsActivity -> {
+                        // Hide the progress dialog if there is any error. And print the error in log.
+                        activity.hideProgressDialog()
+                    }
+
+                }
+
+                Log.e(
                     activity.javaClass.simpleName,
-                    "Error while updating all the details after order placed.",
+                    "Error while updating the user details.",
                     e
-            )
-        }
+                )
+            }
+    }
+    fun deleteCourse(fragment:FacultyAddCourses,courseID:String)
+    {
+        mFireStore.collection(Constants.TBL_COURSES)
+            .document(courseID)
+            .delete()
+            .addOnSuccessListener {
 
+                // Notify the success result to the base class.
+                fragment.courseDeleteSuccess()
+            }
+            .addOnFailureListener { e ->
 
-    }*/
+                // Hide the progress dialog if there is an error.
+                fragment.hideProgressDialog()
 
+                Log.e(
+                    fragment.requireActivity().javaClass.simpleName,
+                    "Error while deleting the product.",
+                    e
+                )
+            }
+    }
 }

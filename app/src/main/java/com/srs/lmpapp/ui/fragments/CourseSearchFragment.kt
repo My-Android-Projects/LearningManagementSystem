@@ -45,8 +45,8 @@ class CourseSearchFragment : BaseFragment() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         // Inflate the layout for this fragment
@@ -87,20 +87,19 @@ class CourseSearchFragment : BaseFragment() {
 
         }
         btnCourseSearch.setOnClickListener(){
-           courseSearchDataCommunicator.sendCourseFilterData(
-                txtCourseName.text.toString(),
-                txtCourseCategory,
-                txtCourseCredits,
-                txtStartDate.text.toString(),
-                txtEndDate.text.toString()
-            )
+          /*  courseSearchDataCommunicator.sendCourseFilterData(
+                    txtCourseName.text.toString(),
+                    txtCourseCategory,
+                    txtCourseCredits
 
-            /*getFragmentManager()?.beginTransaction()
+            )*/
+
+          getFragmentManager()?.beginTransaction()
                     ?.replace(R.id.nav_host_fragment, CourseSearchResultFragment())
                     ?.addToBackStack("Course Search")
                     ?.commit()
 
-*/
+
 
 
 
@@ -156,12 +155,12 @@ class CourseSearchFragment : BaseFragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CourseSearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                CourseSearchFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putString(ARG_PARAM2, param2)
+                    }
                 }
-            }
     }
 
 

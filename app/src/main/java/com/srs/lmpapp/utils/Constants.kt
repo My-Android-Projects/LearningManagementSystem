@@ -19,7 +19,6 @@ object Constants {
     const val LOGGED_IN_USERTYPE:String="logged_in_usertype"
     const val LOGGED_IN_USER_CREDITS:String="logged_in_user+credit"
     const val LOGGED_IN_USER_COURSES:String="logged_in_user_coursess"
-    const val CURRENT_COURSE_ID:String="current_course_id"
     const val CURRENT_ENROLLED_COURSE_ID:String="current_course_id"
 
     const val EXTRA_USER_DETAILS:String="extra_user_details"
@@ -29,7 +28,8 @@ object Constants {
 
 
     const val PICK_IMAGE_REQUEST_CODE = 2
-
+    const val CURRENT_COURSE:String="currentCourse"
+    const val CURRENT_COURSE_ID:String="currentCourseId"
 
     const val TAKEN_BY: String = "takenby"
     const val ENROLLED_BY: String = "enrolledby"

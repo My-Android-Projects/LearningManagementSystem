@@ -5,24 +5,15 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
-// TODO Step 2: Create a custom EditText class for using the custom fonts in the application.
-// START
-/**
- * This class will be used for Custom font text using the TextView which inherits the AppCompatTextView class.
- */
+
 class MSPTextView(context: Context, attrs: AttributeSet) : AppCompatTextView(context, attrs) {
 
-    /**
-     * The init block runs every time the class is instantiated.
-     */
+
     init {
         // Call the function to apply the font to the components.
         applyFont()
     }
 
-    /**
-     * Applies a font to a TextView.
-     */
     private fun applyFont() {
 
         // This is used to get the file from the assets folder and set it to the title textView.
@@ -32,4 +23,3 @@ class MSPTextView(context: Context, attrs: AttributeSet) : AppCompatTextView(con
 
     }
 }
-// END

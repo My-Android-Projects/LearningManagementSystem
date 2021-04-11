@@ -18,8 +18,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.srs.lmpapp.R
 import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.ui.activities.EnrolledCourseDetailsActivity
+import com.srs.lmpapp.utils.Constants
 
-class MyCourseListAdapter(val context: Context, val itemList:List<Course>) : RecyclerView.Adapter<MyCourseListAdapter.MyCourseViewHolder>(){
+class MyCourseListAdapter(val context: Context, val itemList:List<Course>,val userType:String) :
+    RecyclerView.Adapter<MyCourseListAdapter.MyCourseViewHolder>(){
+    private lateinit var  destIntent:Intent
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyCourseViewHolder {
         val view= LayoutInflater.from(parent.context).inflate(R.layout.fragment_course_item,parent,false)
         return MyCourseViewHolder(view)
@@ -45,9 +48,26 @@ class MyCourseListAdapter(val context: Context, val itemList:List<Course>) : Rec
         Picasso.get().load(course.courseimage).error(R.drawable.default_book_cover).into(holder.imgCourseImage)
 
         holder.llContent.setOnClickListener(){
-            val intent= Intent(context, EnrolledCourseDetailsActivity::class.java)
-            intent.putExtra("currentCourseId",course.id)
-            context.startActivity(intent)
+
+            if(userType.equals("Student",true))
+            {
+                 destIntent = Intent(context, EnrolledCourseDetailsActivity::class.java)
+                destIntent.putExtra(Constants.CURRENT_COURSE, course)
+                //intent.putExtra("currentCourseId",course.id)
+                context.startActivity(destIntent)
+
+            }
+            else if(userType.equals("Faculty",true))
+            {
+
+                    destIntent = android.content.Intent(
+                        context,
+                        com.srs.lmpapp.ui.activities.FacultyCourseDetailsActivity::class.java
+                    )
+                    destIntent.putExtra(com.srs.lmpapp.utils.Constants.CURRENT_COURSE, course)
+                    //intent.putExtra("currentCourseId",course.id)
+                    context.startActivity(destIntent)
+            }
 
         }
 

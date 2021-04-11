@@ -15,5 +15,8 @@ import kotlinx.android.parcel.Parcelize
         val startdate: String?="",
         val enddate:String?="",
         val courseimage:String?="",
-        var id:String=""
+        var id:String="",
+        var enrolledby:List<String>?=ArrayList<String>(),
+        var description:String?="",
+        var modules:List<String>?=ArrayList<String>()
     ): Parcelable

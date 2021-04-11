@@ -38,13 +38,24 @@ class StudentDashboardActivity : BaseActivity(), CourseSearchDataCommunicator {
         doubleBackToExit()
     }
 
-    override fun sendCourseFilterData(
-        courseName: String,
-        courseCategory: String,
-        courseCredits: String,
-        courseStartDate: String,
-        courseEndDate: String
-    ) {
+
+
+    override fun sendCourseFilterData(courseName: String, courseCategory: String, courseCredits: String) {
+        val bundle = Bundle()
+        bundle.putString("courseName", courseName)
+        bundle.putString("courseCategory", courseCategory)
+        bundle.putString("courseCredits", courseCredits)
+
+        val courseSearchResultFragment = CourseSearchResultFragment.newInstance(
+        )
+        courseSearchResultFragment.arguments = bundle
+
+        val transaction = getSupportFragmentManager().beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, courseSearchResultFragment).commit()
+
+    }
+
+    override fun sendCourseFilterData_old(courseName: String, courseCategory: String, courseCredits: String, courseStartDate: String, courseEndDate: String) {
         val bundle = Bundle()
         bundle.putString("courseName", courseName)
         bundle.putString("courseCategory", courseCategory)
@@ -55,6 +66,8 @@ class StudentDashboardActivity : BaseActivity(), CourseSearchDataCommunicator {
         )
         val transaction = supportFragmentManager.beginTransaction()
         courseSearchResultFragment.arguments = bundle
-        transaction.replace(R.id.frameLayout, courseSearchResultFragment).commit()
+        transaction.replace(R.id.nav_host_fragment, courseSearchResultFragment)
+                .addToBackStack("Course Search").commit()
+
     }
 }

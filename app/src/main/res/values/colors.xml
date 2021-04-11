@@ -32,5 +32,6 @@
     <color name="dashboard_item_details_bg">#F3F3F3</color>
     <color name="colorLightGrey">#F1F1F1</color>
     <color name="linght_pink">#DA66AB</color>
+    <color name="button_disabled_color">#FF504F4F</color>
 
 </resources>

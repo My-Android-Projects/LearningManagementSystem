@@ -74,13 +74,7 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         }
     }
 
-    /**
-     * This function will identify the result of runtime permission after the user allows or deny permission based on the unique code.
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -163,8 +157,8 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
                 false
             }
 
-            TextUtils.isEmpty(binding.txtCourseDuration.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar("course duration empty", true )
+            TextUtils.isEmpty(binding.txtCourseDesc.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar("course Description empty", true )
                 false
             }
 
@@ -221,7 +215,10 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
             binding.txtStartDate.text.toString().trim{ it <= ' '},
             binding.txtEndDate.text.toString().trim{ it <= ' '},
             mCourseImageURL,
-                ""
+                "",
+            listOf(),
+            binding.txtCourseDesc.text.toString().trim{it <=' '},
+            listOf()
         )
 
         FirestoreClass().uploadCourseDetails(this@AddCourseActivity, course)

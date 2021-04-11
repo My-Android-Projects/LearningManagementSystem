@@ -11,34 +11,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.EnrolledCourseDetailsActivity"
-
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.activities.CourseDetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.activities.AddCourseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.activities.ViewStudentDetailsActivity"></activity>
+        <activity android:name=".ui.activities.FacultyCourseDetailsActivity" />
         <activity
-            android:name=".ui.activities.StudentDashboardActivity"
-            android:label="@string/title_activity_dashboard" />
-        <activity android:name=".ui.activities.UserProfileActivity"
+            android:name=".ui.activities.EnrolledCourseDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.activities.StudentHomeActivity" />
-        <activity android:name=".ui.activities.FacultyHomeActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SplashActivity"
+            android:name=".ui.activities.CourseDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.AddCourseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.UserProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.StudentHomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.FacultyHomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.RegisterActivity"
             android:screenOrientation="portrait"
@@ -51,7 +49,27 @@
             android:name=".ui.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activities.BaseActivity" />
+        <activity
+            android:name=".ui.activities.BaseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activities.FacultyDashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.StudentDashboardActivity"
+            android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

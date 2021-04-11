@@ -1,5 +1,6 @@
 package com.srs.lmpapp.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
@@ -7,28 +8,25 @@ import com.squareup.picasso.Picasso
 import com.srs.lmpapp.R
 import com.srs.lmpapp.databinding.ActivityCourseDetailsBinding
 import com.srs.lmpapp.databinding.ActivityEnrolledCourseDetailsBinding
+import com.srs.lmpapp.databinding.ActivityFacultyCourseDetailsBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.utils.Constants
 
-class EnrolledCourseDetailsActivity : BaseActivity() {
-    private lateinit var binding: ActivityEnrolledCourseDetailsBinding
+class FacultyCourseDetailsActivity : BaseActivity() {
+    private lateinit var binding: ActivityFacultyCourseDetailsBinding
     private lateinit var currentCourse:Course
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEnrolledCourseDetailsBinding.inflate(layoutInflater)
+        binding = ActivityFacultyCourseDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         currentCourse = intent.getParcelableExtra(Constants.CURRENT_COURSE)!!
         displayDetails()
-        binding.btnUnEnroll.setOnClickListener()
+        binding.tvViewStudent.setOnClickListener()
         {
-           if(currentCourse?.id!=null && binding.btnUnEnroll.isEnabled) {
-               showProgressDialog("Please Wait...")
-               FirestoreClass().unEnrollCourse(
-                   this@EnrolledCourseDetailsActivity,
-                   currentCourse.id
-               )
-           }
+           val destIntent = Intent(this@FacultyCourseDetailsActivity, ViewStudentDetailsActivity::class.java)
+            destIntent.putExtra(Constants.CURRENT_COURSE,currentCourse)
+            startActivity(destIntent)
         }
     }
 
@@ -36,7 +34,8 @@ class EnrolledCourseDetailsActivity : BaseActivity() {
     {
         binding.txtCourseName.text=currentCourse.name
         binding.txtCourseCategory.text=currentCourse.category
-        binding.txtFaculty.text=currentCourse.takenby
+        binding.txtNoStudentsEnrolled.text=currentCourse.enrolledby?.size.toString()
+        binding.txtNoSeats.text=currentCourse.totseats.toString()
         binding.txtSchedule.text="${currentCourse.startdate} - ${currentCourse.enddate}"
         binding.txtCourseDesc.text=currentCourse.description
         val adapter: ArrayAdapter<String> =
@@ -53,11 +52,6 @@ class EnrolledCourseDetailsActivity : BaseActivity() {
 
     fun allDetailsUpdatedSuccessfully() {
         hideProgressDialog()
-        showErrorSnackBar("Course Un-Ennrolled!!", false)
-        binding.btnUnEnroll.setText("UnEnrolled")
-        binding.btnUnEnroll.isEnabled=false
-        val disabledColor =
-            ContextCompat.getColor(applicationContext, R.color.button_disabled_color)
-        binding.btnUnEnroll.setBackgroundColor(disabledColor)
+
     }
 }

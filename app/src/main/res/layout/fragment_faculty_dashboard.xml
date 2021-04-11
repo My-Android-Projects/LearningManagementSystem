@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:fillViewport="true"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+tools:context=".ui.activities.FacultyDashboardActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_header_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/header_image_height">
+
+        <ImageView
+            android:id="@+id/iv_header_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/content_description"
+            android:scaleType="fitXY"
+            android:src="@drawable/auth_screens_background" />
+        <FrameLayout
+            android:id="@+id/fl_user_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@id/fl_header_bg"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/iv_user_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/settings_user_picture_margin"
+                android:contentDescription="@string/content_description"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_user_placeholder" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/user_image_background" />
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+
+
+
+    <com.srs.lmpapp.utils.MSPEditText
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/settings_name_textSize"
+        android:enabled="false"
+        tools:text="Denis Panjuta" />
+
+    <com.srs.lmpapp.utils.MSPEditText
+        android:id="@+id/tv_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:enabled="false"
+        android:textSize="@dimen/settings_info_textSize"
+        tools:text="Gender: Male" />
+    <com.srs.lmpapp.utils.MSPEditText
+        android:id="@+id/tv_userType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:enabled="false"
+        android:textSize="@dimen/settings_info_textSize"
+        tools:text="Type: Faculty" />
+    <com.srs.lmpapp.utils.MSPEditText
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/settings_info_textSize"
+        android:enabled="false"
+        tools:text="Email: denis.panjuta@gmail.com" />
+
+    <com.srs.lmpapp.utils.MSPEditText
+        android:id="@+id/tv_mobile_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/settings_info_marginTop"
+        android:textColor="@color/black"
+        android:textSize="@dimen/settings_info_textSize"
+        android:enabled="false"
+        tools:text="Phone: 123-456-7893" />
+
+    <com.srs.lmpapp.utils.MSPEditText
+        android:id="@+id/tv_courseEnrolled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/settings_info_marginTop"
+        android:textColor="@color/black"
+        android:textSize="@dimen/settings_info_textSize"
+
+        android:enabled="false"
+        tools:text="Course(s) Enrolled: 10" />
+    <com.srs.lmpapp.utils.MSPEditText
+        android:id="@+id/tv_TotCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/settings_info_marginTop"
+        android:textColor="@color/black"
+        android:textSize="@dimen/settings_info_textSize"
+
+        android:enabled="false"
+        tools:text="Total Credits: 10" />
+    <com.srs.lmpapp.utils.MSPButton
+        android:id="@+id/btn_Edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_mobile_number"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/settings_button_marginStartEnd"
+        android:layout_marginTop="@dimen/settings_button_marginTopBottom"
+        android:layout_marginEnd="@dimen/settings_button_marginStartEnd"
+        android:layout_marginBottom="@dimen/settings_button_marginTopBottom"
+        android:background="@drawable/button_background"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="@dimen/btn_padding"
+        android:paddingBottom="@dimen/btn_padding"
+        android:text="Edit"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/btn_textSize" />
+
+</LinearLayout>
+</ScrollView>

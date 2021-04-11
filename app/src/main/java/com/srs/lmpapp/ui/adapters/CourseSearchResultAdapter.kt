@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.srs.lmpapp.R
 import com.srs.lmpapp.model.Course
+import com.srs.lmpapp.utils.Constants
 
 class CourseSearchResultAdapter(val context: Context, val itemList:List<Course>) : RecyclerView.Adapter<CourseSearchResultAdapter.CourseSessionsViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseSessionsViewHolder {
@@ -45,7 +46,7 @@ class CourseSearchResultAdapter(val context: Context, val itemList:List<Course>)
 
          holder.llContent.setOnClickListener(){
              val intent= Intent(context,CourseDetailsActivity::class.java)
-             intent.putExtra("currentCourseId",course.id)
+             intent.putExtra(Constants.CURRENT_COURSE,course)
              context.startActivity(intent)
 
          }

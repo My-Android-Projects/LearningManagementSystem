@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:padding="6dp"
                         android:textSize="18sp"
-                        android:text="Author:"/>
+                        android:text="Faculty:"/>
                     <com.srs.lmpapp.utils.MSPTextView
                         android:id="@+id/txtFaculty"
                         android:layout_width="wrap_content"
@@ -128,20 +128,57 @@
                         android:text="Rajewari"/>
                 </LinearLayout>
 
-                <com.srs.lmpapp.utils.MSPTextViewBold
-                    android:id="@+id/txtCourseDesc"
+                <LinearLayout
+                    android:id="@+id/llcourseDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_below="@+id/llAuthor"
-                    android:padding="6dp"
-                    android:textSize="18sp"
-                    android:text="What you'll learn?"/>
+                    >
+                    <com.srs.lmpapp.utils.MSPTextViewBold
+                        android:id="@+id/lblCourseDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="Description:"/>
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/txtCourseDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+
+                        android:text="Course Description"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llModule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/llcourseDesc"
+                    >
+                    <com.srs.lmpapp.utils.MSPTextViewBold
+                        android:id="@+id/lblModules"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="Modules:"/>
+                    <ListView
+                        android:id="@+id/lstModuleList"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:scrollbars="none">
+                    </ListView>
+                </LinearLayout>
 
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
     <Button
-        android:id="@+id/btnEnroll"
+        android:id="@+id/btnUnEnroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

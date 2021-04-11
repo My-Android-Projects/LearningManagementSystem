@@ -1,6 +1,5 @@
 package com.srs.lmpapp.ui.fragments
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.srs.lmpapp.R
+import com.srs.lmpapp.databinding.FragmentFacultyMyCoursesBinding
 import com.srs.lmpapp.databinding.FragmentMycoursesBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
@@ -19,11 +19,11 @@ import com.srs.lmpapp.utils.Constants
 
 
 // TODO Step 2: Rename the NotificationsFragment as OrdersFragment as well rename the xml files accordingly.
-class MyCoursesFragment : BaseFragment() {
+class FacultyMyCoursesFragment : BaseFragment() {
     lateinit var recyclerCourseSessions: RecyclerView
     lateinit var layoutManager: RecyclerView.LayoutManager
     lateinit var recyclerAdapter: MyCourseListAdapter
-    private var _binding: FragmentMycoursesBinding? = null
+    private var _binding: FragmentFacultyMyCoursesBinding? = null
     private val binding get() = _binding!!
     lateinit var txtNumOfCourses: TextView
 
@@ -32,26 +32,26 @@ class MyCoursesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMycoursesBinding.inflate(inflater, container, false)
+        _binding = FragmentFacultyMyCoursesBinding.inflate(inflater, container, false)
         val view = binding.root
         recyclerCourseSessions= view.findViewById(R.id.recyclerCourseSessions)
         txtNumOfCourses= view.findViewById(R.id.txtNumOfCourses)
 
         showProgressDialog("Please Wait..")
-        FirestoreClass().getEnrolledCoursesListForStudent(this@MyCoursesFragment)
+        FirestoreClass().getCoursesListForFaculty(this@FacultyMyCoursesFragment)
         return view
     }
 
     companion object {
 
-    fun newInstance() =
-        MyCoursesFragment().apply {
-            arguments = Bundle().apply {
+        fun newInstance() =
+            MyCoursesFragment().apply {
+                arguments = Bundle().apply {
 
+                }
             }
-        }
     }
-    fun successEnrolledCoursesListFromFireStore(enrolledCourseList:ArrayList<Course>)
+    fun successCoursesListFromFireStore(enrolledCourseList:ArrayList<Course>)
     {
         hideProgressDialog()
         layoutManager = LinearLayoutManager(activity)

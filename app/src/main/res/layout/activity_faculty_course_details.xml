@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ui.activities.FacultyCourseDetailsActivity"
+android:background="#fff">
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar_add_product_activity"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/app_gradient_color_background"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingStart="@dimen/toolbar_title_paddingStart"
+        android:paddingEnd="0dp"
+        android:text="COURSE DETAILS"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/toolbar_title_text_size"
+        android:textStyle="bold" />
+
+</androidx.appcompat.widget.Toolbar>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="70dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="horizontal"
+            android:weightSum="6">
+            <ImageView
+                android:id="@+id/imgCourseImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"
+                android:paddingRight="5dp"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4.5">
+                <com.srs.lmpapp.utils.MSPTextView
+                    android:id="@+id/txtCourseName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name of the Course"
+                    android:padding="8dp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    />
+
+                <com.srs.lmpapp.utils.MSPTextView
+                    android:id="@+id/txtCourseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Course Category"
+                    android:layout_below="@id/txtCourseName"
+                    android:padding="8dp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    />
+                <com.srs.lmpapp.utils.MSPTextView
+                    android:id="@+id/txtSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="06/10/2021 - 07/15/2021"
+                    android:layout_below="@id/txtCourseCategory"
+                    android:padding="8dp"
+                    android:textStyle="bold"
+                    android:textColor="#357038"
+                    android:textSize="15sp"/>
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/llContent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/llAboutSession"
+                >
+            <com.srs.lmpapp.utils.MSPTextViewBold
+                android:id="@+id/txtAboutTheSessionStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="150dp"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:text="About the Session"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/llSeats">
+                    <com.srs.lmpapp.utils.MSPTextViewBold
+                        android:id="@+id/lblNoSeats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="No Of Seats:"/>
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/txtNoSeats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="30"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/llEnrolledStudents">
+                    <com.srs.lmpapp.utils.MSPTextViewBold
+                        android:id="@+id/lblStudentEnrolled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="No Of Students Enrolled:"/>
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/txtNoStudentsEnrolled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:textSize="18sp"
+                        android:text="10"/>
+
+                    <com.srs.lmpapp.utils.MSPTextView
+                        android:id="@+id/tv_viewStudent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="60dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:padding="@dimen/clickable_text_view_padding"
+                        android:text="View Details"
+                        android:textColor="@color/colorSecondaryText"
+                        android:textSize="@dimen/forgot_password_textSize"
+                    />
+
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/llAboutSession"
+            >
+            <com.srs.lmpapp.utils.MSPTextViewBold
+                android:id="@+id/txtAboutTheCourseStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:text="About the Course"/>
+
+
+            <LinearLayout
+                android:id="@+id/llcourseDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/txtAboutTheCourseStatic"
+                >
+                <com.srs.lmpapp.utils.MSPTextViewBold
+                    android:id="@+id/lblCourseDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:padding="6dp"
+                    android:textSize="18sp"
+                    android:text="Description:"/>
+                <com.srs.lmpapp.utils.MSPTextView
+                    android:id="@+id/txtCourseDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:textSize="18sp"
+
+                    android:text="Course Description"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llModule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/llcourseDesc"
+                >
+                <com.srs.lmpapp.utils.MSPTextViewBold
+                    android:id="@+id/lblModules"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:textSize="18sp"
+                    android:text="Modules:"/>
+                <ListView
+                    android:id="@+id/lstModuleList"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scrollbars="none">
+                </ListView>
+            </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
+<Button
+    android:id="@+id/btnCancel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/button_background"
+    android:text="Cancel Session"
+    android:textColor="#ffff"
+    android:textStyle="bold"
+    android:textSize="19sp"/>
+
+
+</RelativeLayout>
