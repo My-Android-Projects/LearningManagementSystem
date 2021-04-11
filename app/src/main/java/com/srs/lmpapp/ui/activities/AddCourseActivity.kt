@@ -120,7 +120,7 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
      * A function for actionBar Setup.
      */    private fun setupActionBar() {
 
-        setSupportActionBar(binding.toolbarAddProductActivity)
+        setSupportActionBar(binding.toolbarAddCourseActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null) {
@@ -128,7 +128,7 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
 
-        binding.toolbarAddProductActivity.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarAddCourseActivity.setNavigationOnClickListener { onBackPressed() }
     }
 
     /**

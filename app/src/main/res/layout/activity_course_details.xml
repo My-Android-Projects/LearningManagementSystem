@@ -7,7 +7,7 @@
     tools:context=".ui.activities.CourseDetailsActivity"
     android:background="#fff">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_add_product_activity"
+        android:id="@+id/toolbar_course_details_activity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/app_gradient_color_background"

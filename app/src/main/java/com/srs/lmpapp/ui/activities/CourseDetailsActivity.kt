@@ -22,6 +22,7 @@ class CourseDetailsActivity : BaseActivity() {
         binding=ActivityCourseDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         currentCourse = intent.getParcelableExtra(Constants.CURRENT_COURSE)!!
+        setupActionBar()
         displayDetails()
         binding.btnEnroll.setOnClickListener()
         {
@@ -67,6 +68,19 @@ class CourseDetailsActivity : BaseActivity() {
 
 
 
+    }
+
+    private fun setupActionBar() {
+
+        setSupportActionBar(binding.toolbarCourseDetailsActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
+
+        binding.toolbarCourseDetailsActivity.setNavigationOnClickListener { onBackPressed() }
     }
     fun courseDetailsSuccess(course: Course)
     {

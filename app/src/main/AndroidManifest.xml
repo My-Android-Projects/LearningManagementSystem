@@ -11,8 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.ViewStudentDetailsActivity"></activity>
-        <activity android:name=".ui.activities.FacultyCourseDetailsActivity" />
+        <activity android:name=".ui.activities.ViewStudentDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.activities.FacultyCourseDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.activities.EnrolledCourseDetailsActivity"
             android:screenOrientation="portrait"
@@ -53,6 +57,8 @@
             android:name=".ui.activities.BaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+
         <activity
             android:name=".ui.activities.SplashActivity"
             android:screenOrientation="portrait"
@@ -68,7 +74,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.StudentDashboardActivity"
-            android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait" />
     </application>
 

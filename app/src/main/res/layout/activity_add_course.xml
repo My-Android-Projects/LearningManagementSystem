@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context=".ui.activities.AddCourseActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_add_product_activity"
+        android:id="@+id/toolbar_add_course_activity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/app_gradient_color_background"
@@ -108,31 +108,32 @@
             android:imeOptions="actionDone"
             />
     </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_coursecategory"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="16dp"
+
+                android:hint="category"
+                >
+                <com.srs.lmpapp.utils.MSPEditText
+                    android:id="@+id/txtCourseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:imeOptions="actionDone"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="10"
+        android:weightSum="5"
         >
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_coursecategory"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="6"
-            android:hint="category"
-            >
-            <com.srs.lmpapp.utils.MSPEditText
-                android:id="@+id/txtCourseCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                android:imeOptions="actionDone"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
      <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_coursecredits"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -141,7 +142,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-         android:layout_weight="2"
+         android:layout_weight="2.5"
         android:hint="credits">
         <com.srs.lmpapp.utils.MSPEditText
             android:id="@+id/txtCourseCredits"
@@ -161,7 +162,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="16dp"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:hint="tot.seats"
 
             >

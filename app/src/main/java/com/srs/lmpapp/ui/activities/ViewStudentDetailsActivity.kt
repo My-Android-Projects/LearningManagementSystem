@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.srs.lmpapp.R
+import com.srs.lmpapp.databinding.ActivityEnrolledCourseDetailsBinding
+import com.srs.lmpapp.databinding.ActivityFacultyCourseDetailsBinding
+import com.srs.lmpapp.databinding.ActivityViewStudentDetailsBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.model.User
@@ -18,10 +21,13 @@ class ViewStudentDetailsActivity : BaseActivity() {
     lateinit var recyclerStudentDetails: RecyclerView
     lateinit var layoutManager: RecyclerView.LayoutManager
     lateinit var recyclerAdapter: StudentListAdapter
+    private lateinit var binding: ActivityViewStudentDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_student_details)
+        binding = ActivityViewStudentDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setupActionBar()
         currentCourse = intent.getParcelableExtra(Constants.CURRENT_COURSE)!!
         recyclerStudentDetails= findViewById(R.id.recyclerStudentDetails)
         layoutManager = LinearLayoutManager(this@ViewStudentDetailsActivity)
@@ -29,6 +35,19 @@ class ViewStudentDetailsActivity : BaseActivity() {
         showProgressDialog("Please Wait..")
         FirestoreClass().getStudentDetails(this@ViewStudentDetailsActivity,currentCourse.id)
 
+    }
+
+    private fun setupActionBar() {
+
+        setSupportActionBar(binding.toolbarStudentDetailsActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
+
+        binding.toolbarStudentDetailsActivity.setNavigationOnClickListener { onBackPressed() }
     }
     fun successStudentList(studentList:List<User>)
     {

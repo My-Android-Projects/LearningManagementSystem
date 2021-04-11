@@ -44,6 +44,20 @@ class EnrolledCourseDetailsActivity : BaseActivity() {
         binding.lstModuleList.adapter=adapter;
         Picasso.get().load(currentCourse.courseimage).error(R.drawable.ic_user_placeholder).into(binding.imgCourseImage)
     }
+
+    private fun setupActionBar() {
+
+        setSupportActionBar(binding.toolbarEnrolledCourseDetailsActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
+
+        binding.toolbarEnrolledCourseDetailsActivity.setNavigationOnClickListener { onBackPressed() }
+    }
+
     fun courseDetailsSuccess(course: Course) {
         hideProgressDialog()
         currentCourse=course
