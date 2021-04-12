@@ -85,8 +85,9 @@
      >
     <com.srs.lmpapp.utils.MSPEditText
         android:id="@+id/txtCourseName"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:imeOptions="actionDone"
     />
     </com.google.android.material.textfield.TextInputLayout>
@@ -97,10 +98,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="300"
+        app:endIconMode="clear_text"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:hint="description"
-        >
+        android:hint="description">
         <com.srs.lmpapp.utils.MSPEditText
             android:id="@+id/txtCourseDesc"
             android:layout_width="match_parent"
@@ -110,51 +113,48 @@
     </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_coursecategory"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="16dp"
+                android:hint="Category">
 
-                android:hint="category"
-                >
-                <com.srs.lmpapp.utils.MSPEditText
-                    android:id="@+id/txtCourseCategory"
+                <AutoCompleteTextView
+                    android:id="@+id/lstCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:inputType="none"
                     android:imeOptions="actionDone"
                     />
+
             </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="5"
-        >
+        android:weightSum="5">
 
      <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_coursecredits"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="16dp"
+         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="16dp"
+         android:layout_marginTop="25dp"
+         android:layout_marginEnd="16dp"
          android:layout_weight="2.5"
         android:hint="credits">
-        <com.srs.lmpapp.utils.MSPEditText
-            android:id="@+id/txtCourseCredits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            />
+         <AutoCompleteTextView
+             android:id="@+id/lstCredits"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:inputType="none"
+             android:imeOptions="actionDone"
+             />
     </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
+     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_totseats"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
@@ -163,15 +163,12 @@
             android:layout_marginTop="25dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="2.5"
-            android:hint="tot.seats"
-
-            >
+            android:hint="tot.seats">
             <com.srs.lmpapp.utils.MSPEditText
                 android:id="@+id/txtTotSeats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-            android:imeOptions="actionDone"
+                android:imeOptions="actionDone"
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -179,43 +176,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
+        android:weightSum="10">
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_startdate"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="150dp"
+        app:startIconDrawable="@drawable/ic_calendar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:hint="start date"
-        >
+        android:layout_weight="5"
+        android:hint="start date">
         <com.srs.lmpapp.utils.MSPEditText
             android:id="@+id/txtStartDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
-            android:inputType="date"
+            android:inputType="none"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_enddate"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="150dp"
+        app:startIconDrawable="@drawable/ic_calendar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
         android:hint="end date"
+        android:layout_weight="5"
 
         >
         <com.srs.lmpapp.utils.MSPEditText
             android:id="@+id/txtEndDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
+
             android:imeOptions="actionDone"
+            android:inputType="none"
+            android:enabled="false"
             />
     </com.google.android.material.textfield.TextInputLayout>
 

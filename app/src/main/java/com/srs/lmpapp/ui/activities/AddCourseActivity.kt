@@ -1,25 +1,31 @@
 package com.srs.lmpapp.ui.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.srs.lmpapp.R
 import com.srs.lmpapp.databinding.ActivityAddCourseBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
-import com.srs.lmpapp.model.User
 import com.srs.lmpapp.utils.Constants
 import com.srs.lmpapp.utils.GlideLoader
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddCourseActivity : BaseActivity(),View.OnClickListener {
     private var mCourseImageURL: String = ""
@@ -27,16 +33,37 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
 
 
     private lateinit var binding:ActivityAddCourseBinding
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityAddCourseBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupActionBar()
+        val categoryItems = getResources().getStringArray(
+            R.array.category
+        );
+        val category_adapter = ArrayAdapter(
+            this@AddCourseActivity,
+            R.layout.drop_down_item,
+            categoryItems
+        )
+        (binding.lstCategory as? AutoCompleteTextView)?.setAdapter(category_adapter)
 
-        // Assign the click event to iv_add_update_product image.
+
+        val credits_items =  getResources().getStringArray(
+            R.array.credits
+        );
+        val credits_adapter = ArrayAdapter(
+            this@AddCourseActivity,
+            R.layout.drop_down_item,
+            credits_items
+        )
+        (binding.lstCredits as? AutoCompleteTextView)?.setAdapter(credits_adapter)
+
+
+        binding.txtStartDate.setOnClickListener(this)
+        binding.txtEndDate.setOnClickListener(this)
         binding.ivAddUpdateCourse.setOnClickListener(this)
-
-        // Assign the click event to submit button.
         binding.btnSubmit.setOnClickListener(this)
     }
     override fun onClick(v: View?) {
@@ -69,6 +96,43 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
                     if (validateCourseDetails()) {
                         uploadCourseImage()
                     }
+                }
+                R.id.txtStartDate-> {
+                    val constraintsBuilder = CalendarConstraints.Builder().setValidator(
+                        DateValidatorPointForward.now())
+                    val materialStartDateBuilder = MaterialDatePicker.Builder.datePicker().setCalendarConstraints(
+                        constraintsBuilder.build())
+                    materialStartDateBuilder.setTitleText("Select Course Start Date");
+                    val materialStartDatePicker  =  materialStartDateBuilder.setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
+
+                    materialStartDatePicker.show(supportFragmentManager, materialStartDatePicker.toString())
+                    materialStartDatePicker.addOnPositiveButtonClickListener {
+                        val timeZoneUTC = TimeZone.getDefault()
+                        val offsetFromUTC = timeZoneUTC.getOffset(Date().time) * -1
+                        val simpleFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+                        val date = Date(it + offsetFromUTC)
+                        binding.txtStartDate.setText(simpleFormat.format(date))
+                    }
+
+                }
+                R.id.txtEndDate-> {
+
+                    val constraintsBuilder = CalendarConstraints.Builder().setValidator(
+                        DateValidatorPointForward.now())
+                    val materialEndDateBuilder = MaterialDatePicker.Builder.datePicker().setCalendarConstraints(
+                        constraintsBuilder.build())
+                    materialEndDateBuilder.setTitleText("Select Course End Date");
+                    val materialEndDatePicker  =  materialEndDateBuilder.setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
+
+                    materialEndDatePicker.show(supportFragmentManager, materialEndDatePicker.toString())
+                    materialEndDatePicker.addOnPositiveButtonClickListener {
+                        val timeZoneUTC = TimeZone.getDefault()
+                        val offsetFromUTC = timeZoneUTC.getOffset(Date().time) * -1
+                        val simpleFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+                        val date = Date(it + offsetFromUTC)
+                        binding.txtEndDate.setText(simpleFormat.format(date))
+                    }
+
                 }
             }
         }
@@ -104,12 +168,15 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         ) {
 
             binding.ivAddUpdateCourse.setImageDrawable(
-                ContextCompat.getDrawable(this@AddCourseActivity,R.drawable.ic_vector_edit)
+                ContextCompat.getDrawable(this@AddCourseActivity, R.drawable.ic_vector_edit)
             )
             mSelectedImageFileUri = data.data!!
             try {
                 // Load the product image in the ImageView.
-                GlideLoader(this@AddCourseActivity).loadCoursePicture( mSelectedImageFileUri!!, binding.ivCourseImage )
+                GlideLoader(this@AddCourseActivity).loadCoursePicture(
+                    mSelectedImageFileUri!!,
+                    binding.ivCourseImage
+                )
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -147,28 +214,28 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
                 false
             }
 
-            TextUtils.isEmpty(binding.txtCourseCategory.text.toString().trim { it <= ' ' }) -> {
+            TextUtils.isEmpty(binding.lstCategory.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar("course category empty", true)
                 false
             }
 
-            TextUtils.isEmpty(binding.txtCourseCredits.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar("credit is empty",true )
+            TextUtils.isEmpty(binding.lstCredits.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar("credit is empty", true)
                 false
             }
 
             TextUtils.isEmpty(binding.txtCourseDesc.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar("course Description empty", true )
+                showErrorSnackBar("course Description empty", true)
                 false
             }
 
 
             TextUtils.isEmpty(binding.txtTotSeats.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar("tot.seats empty",true)
+                showErrorSnackBar("tot.seats empty", true)
                 false
             }
             TextUtils.isEmpty(binding.txtStartDate.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar("start date empty",true )
+                showErrorSnackBar("start date empty", true)
                 false
             }
 
@@ -187,7 +254,7 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
     }
     fun courseUploadSuccess() {
         hideProgressDialog()
-        Toast.makeText(this@AddCourseActivity,"Uploaded Course successfully",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@AddCourseActivity, "Uploaded Course successfully", Toast.LENGTH_SHORT).show()
 
 
     }
@@ -199,7 +266,11 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
     private fun uploadCourseImage()
     {
         showProgressDialog(resources.getString(R.string.please_wait))
-        FirestoreClass().uploadImageToCloudStorage(this@AddCourseActivity, mSelectedImageFileUri,  Constants.COURSE_IMAGE)
+        FirestoreClass().uploadImageToCloudStorage(
+            this@AddCourseActivity,
+            mSelectedImageFileUri,
+            Constants.COURSE_IMAGE
+        )
     }
     private fun uploadCourseDetails()
     {
@@ -207,17 +278,17 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         val course = Course(
 
             binding.txtCourseName.text.toString().trim { it <= ' ' }, //course name
-            binding.txtCourseCategory.text.toString().trim { it <= ' ' }, //course category
-            binding.txtCourseCredits.text.toString().trim{ it <= ' ' }.toLong(), //course credits
+            binding.lstCategory.text.toString().trim { it <= ' ' }, //course category
+            binding.lstCredits.text.toString().trim { it <= ' ' }.toLong(), //course credits
             FirestoreClass().getCurrentUserID(), //faculty doc id
             binding.txtTotSeats.text.toString().trim { it <= ' ' }.toLong(),
             binding.txtTotSeats.text.toString().trim { it <= ' ' }.toLong(),
-            binding.txtStartDate.text.toString().trim{ it <= ' '},
-            binding.txtEndDate.text.toString().trim{ it <= ' '},
+            binding.txtStartDate.text.toString().trim { it <= ' ' },
+            binding.txtEndDate.text.toString().trim { it <= ' ' },
             mCourseImageURL,
-                "",
+            "",
             listOf(),
-            binding.txtCourseDesc.text.toString().trim{it <=' '},
+            binding.txtCourseDesc.text.toString().trim { it <= ' ' },
             listOf()
         )
 

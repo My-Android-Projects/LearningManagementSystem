@@ -97,7 +97,8 @@
             android:padding="@dimen/et_padding"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/et_textSize"
-            tools:text="abc@gmail.com" />
+            tools:text="abc@gmail.com"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

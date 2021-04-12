@@ -11,12 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.ViewStudentDetailsActivity"
+        <activity android:name=".ui.activities.AddModuleActivity"></activity>
+        <activity
+            android:name=".ui.activities.ViewStudentDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.activities.FacultyCourseDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.FacultyCourseDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.EnrolledCourseDetailsActivity"
             android:screenOrientation="portrait"
@@ -57,8 +60,6 @@
             android:name=".ui.activities.BaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name=".ui.activities.SplashActivity"
             android:screenOrientation="portrait"
