@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-    android:orientation="vertical"
-tools:context=".ui.activities.ViewStudentDetailsActivity"
-    android:background="#fff">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.ViewStudentDetailsActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_student_details_activity"
         android:layout_width="match_parent"
@@ -26,7 +24,6 @@ tools:context=".ui.activities.ViewStudentDetailsActivity"
 
     </androidx.appcompat.widget.Toolbar>
 
-
     <TextView
         android:id="@+id/txtNumOfCourses"
         android:layout_width="match_parent"
@@ -34,7 +31,9 @@ tools:context=".ui.activities.ViewStudentDetailsActivity"
         android:text="100 courses found"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:layout_below="@+id/toolbar_student_details_activity"
         />
+
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerStudentDetails"
     android:layout_width="match_parent"
@@ -42,6 +41,7 @@ tools:context=".ui.activities.ViewStudentDetailsActivity"
     android:padding="10dp"
     android:layout_marginTop="5dp"
     android:layout_margin="5dp"
+    android:layout_below="@+id/txtNumOfCourses"
   />
+</RelativeLayout>
 
-</LinearLayout>

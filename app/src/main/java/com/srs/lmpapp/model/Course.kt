@@ -6,15 +6,15 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
  class Course(
-        val name:String?="",
-        val category:String?="",
-        val credits: Long=0,
-        val takenby:String?="",
-        val totseats: Long=0,
+       var name:String?="",
+        var category:String?="",
+        var credits: Long=0,
+        var takenby:String?="",
+        var totseats: Long=0,
         var remainingseats:Long=0,
-        val startdate: String?="",
-        val enddate:String?="",
-        val courseimage:String?="",
+        var startdate: String?="",
+        var enddate:String?="",
+        var courseimage:String?="",
         var id:String="",
         var enrolledby:List<String>?=ArrayList<String>(),
         var description:String?="",

@@ -97,10 +97,11 @@ class LoginActivity : BaseActivity() {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password).addOnCompleteListener(
                 OnCompleteListener<AuthResult>
                 { task ->
-                    hideProgressDialog()
-                    if (task.isSuccessful)
+                  hideProgressDialog()
+                    if (task.isSuccessful) {
+                        showProgressDialog(resources.getString(R.string.please_wait))
                         FirestoreClass().getSnopshotDetails(this@LoginActivity)
-                    else
+                    }else
                         showErrorSnackBar(task.exception!!.message.toString(), true)
 
 

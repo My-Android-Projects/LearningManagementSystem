@@ -31,8 +31,10 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
     private var mCourseImageURL: String = ""
     private var mSelectedImageFileUri: Uri? = null
 
-
+    private lateinit var modules : List<String>
     private lateinit var binding:ActivityAddCourseBinding
+    private  var currentCourse:Course=Course()
+    private val ADD_MODULE_ACTIVITY_REQUEST_CODE = 200
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +67,7 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         binding.txtEndDate.setOnClickListener(this)
         binding.ivAddUpdateCourse.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
+        binding.tvViewModules.setOnClickListener(this)
     }
     override fun onClick(v: View?) {
 
@@ -91,7 +94,15 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
                         )
                     }
                 }
+                R.id.tv_viewModules-> {
+                    var destIntent = Intent(this@AddCourseActivity, AddModuleActivity::class.java)
+                    destIntent.putExtra(
+                        com.srs.lmpapp.utils.Constants.CURRENT_COURSE,
+                        currentCourse
+                    )
 
+                    startActivityForResult(destIntent, ADD_MODULE_ACTIVITY_REQUEST_CODE)
+                }
                 R.id.btn_submit -> {
                     if (validateCourseDetails()) {
                         uploadCourseImage()
@@ -181,6 +192,15 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
                 e.printStackTrace()
             }
         }
+
+
+        if (requestCode == ADD_MODULE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                //currentCourse = data?.getParcelableExtra(Constants.CURRENT_COURSE)!!
+                 currentCourse = data?.getParcelableExtra(Constants.CURRENT_COURSE)!!
+
+            }
+        }
     }
 
     /**
@@ -205,8 +225,10 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         return when {
 
             mSelectedImageFileUri == null -> {
-                showErrorSnackBar("select course image", true)
-                false
+               // showErrorSnackBar("select course image", true)
+
+                //false
+                true
             }
 
             TextUtils.isEmpty(binding.txtCourseName.text.toString().trim { it <= ' ' }) -> {
@@ -260,6 +282,7 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
     }
     fun imageUploadSuccess(imageURL: String)
     {
+
         mCourseImageURL = imageURL
         uploadCourseDetails()
     }
@@ -271,11 +294,13 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
             mSelectedImageFileUri,
             Constants.COURSE_IMAGE
         )
+
+
     }
     private fun uploadCourseDetails()
     {
         // Here we get the text from editText and trim the space
-        val course = Course(
+        /* currentCourse = Course(
 
             binding.txtCourseName.text.toString().trim { it <= ' ' }, //course name
             binding.lstCategory.text.toString().trim { it <= ' ' }, //course category
@@ -289,9 +314,24 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
             "",
             listOf(),
             binding.txtCourseDesc.text.toString().trim { it <= ' ' },
-            listOf()
-        )
+            modules
+        )*/
+        currentCourse.name=binding.txtCourseName.text.toString().trim { it <= ' ' }
+        currentCourse.description=binding.txtCourseDesc.text.toString().trim { it <= ' ' }
+        currentCourse.category=binding.lstCategory.text.toString().trim { it <= ' ' }
+        currentCourse.credits=binding.lstCredits.text.toString().trim { it <= ' ' }.toLong()
+        currentCourse.takenby=FirestoreClass().getCurrentUserID()
+        currentCourse.totseats=binding.txtTotSeats.text.toString().trim { it <= ' ' }.toLong()
+        currentCourse.remainingseats=binding.txtTotSeats.text.toString().trim { it <= ' ' }.toLong()
+        currentCourse.startdate=binding.txtStartDate.text.toString().trim { it <= ' ' }
+        currentCourse.enddate=binding.txtEndDate.text.toString().trim { it <= ' ' }
+        currentCourse.enrolledby=listOf()
+        currentCourse.id=""
+        //currentCourse.modules=modules
+        currentCourse.courseimage= mCourseImageURL
 
-        FirestoreClass().uploadCourseDetails(this@AddCourseActivity, course)
+
+
+        FirestoreClass().uploadCourseDetails(this@AddCourseActivity, currentCourse)
     }
 }

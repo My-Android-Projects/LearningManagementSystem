@@ -25,7 +25,7 @@ object Constants {
     const val READ_STORAGE_PERMISSION_CODE = 2
  const val TOT_CREDITS:String="totcredits"
     const val TOT_COURSES:String="totcourses"
-
+    const val MODULES="modules"
 
     const val PICK_IMAGE_REQUEST_CODE = 2
     const val CURRENT_COURSE:String="currentCourse"

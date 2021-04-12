@@ -85,7 +85,7 @@ class FacultyAddCourses : BaseFragment() {
     }
 
 
-    fun deleteProduct(courseID: String) {
+    fun deleteCourse(courseID: String) {
 
         showAlertDialogToDeleteCourse(courseID)
     }

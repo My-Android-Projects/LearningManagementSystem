@@ -72,7 +72,20 @@
     </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.srs.lmpapp.utils.MSPTextViewBold
+        android:id="@+id/tv_viewModules"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="290dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Modules"
 
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="@dimen/clickable_text_view_padding"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="@dimen/forgot_password_textSize"
+
+        />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_coursename"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -217,7 +230,7 @@
 
             android:imeOptions="actionDone"
             android:inputType="none"
-            android:enabled="false"
+
             />
     </com.google.android.material.textfield.TextInputLayout>
 

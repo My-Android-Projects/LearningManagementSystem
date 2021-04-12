@@ -1,18 +1,14 @@
 package com.srs.lmpapp.ui.activities
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.srs.lmpapp.R
-import com.srs.lmpapp.databinding.ActivityEnrolledCourseDetailsBinding
-import com.srs.lmpapp.databinding.ActivityFacultyCourseDetailsBinding
 import com.srs.lmpapp.databinding.ActivityViewStudentDetailsBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.model.User
-import com.srs.lmpapp.ui.adapters.MyCourseListAdapter
 import com.srs.lmpapp.ui.adapters.StudentListAdapter
 import com.srs.lmpapp.utils.Constants
 
@@ -22,7 +18,7 @@ class ViewStudentDetailsActivity : BaseActivity() {
     lateinit var layoutManager: RecyclerView.LayoutManager
     lateinit var recyclerAdapter: StudentListAdapter
     private lateinit var binding: ActivityViewStudentDetailsBinding
-
+    private  var studentList: List<User> = listOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityViewStudentDetailsBinding.inflate(layoutInflater)
@@ -30,10 +26,18 @@ class ViewStudentDetailsActivity : BaseActivity() {
         setupActionBar()
         currentCourse = intent.getParcelableExtra(Constants.CURRENT_COURSE)!!
         recyclerStudentDetails= findViewById(R.id.recyclerStudentDetails)
-        layoutManager = LinearLayoutManager(this@ViewStudentDetailsActivity)
-       //studentsList: List<String> =currentCourse.enrolledby!!
+
+         layoutManager = LinearLayoutManager(this@ViewStudentDetailsActivity)
+        recyclerAdapter = StudentListAdapter(
+            this@ViewStudentDetailsActivity as Context,
+            studentList
+        )
+        recyclerStudentDetails.adapter = recyclerAdapter
+        recyclerStudentDetails.layoutManager = layoutManager
+
+        //studentsList: List<String> =currentCourse.enrolledby!!
         showProgressDialog("Please Wait..")
-        FirestoreClass().getStudentDetails(this@ViewStudentDetailsActivity,currentCourse.id)
+        FirestoreClass().getStudentDetails(this@ViewStudentDetailsActivity, currentCourse.id)
 
     }
 
@@ -49,10 +53,14 @@ class ViewStudentDetailsActivity : BaseActivity() {
 
         binding.toolbarStudentDetailsActivity.setNavigationOnClickListener { onBackPressed() }
     }
-    fun successStudentList(studentList:List<User>)
+    fun successStudentList(studentList: List<User>)
     {
         hideProgressDialog()
-        recyclerAdapter = StudentListAdapter(this@ViewStudentDetailsActivity as Context , studentList)
+        layoutManager = LinearLayoutManager(this@ViewStudentDetailsActivity)
+        recyclerAdapter = StudentListAdapter(
+            this@ViewStudentDetailsActivity as Context,
+            studentList
+        )
         recyclerStudentDetails.adapter = recyclerAdapter
        recyclerStudentDetails.layoutManager = layoutManager
 
