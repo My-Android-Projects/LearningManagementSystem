@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ui.activities.CurrentCourseDetailsActivity"
+android:background="#fff">
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar_enrolled_course_details_activity"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/app_gradient_color_background"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingStart="@dimen/toolbar_title_paddingStart"
+        android:paddingEnd="0dp"
+        android:text="COURSE DETAILS"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/toolbar_title_text_size"
+        android:textStyle="bold" />
+
+</androidx.appcompat.widget.Toolbar>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="70dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+            <LinearLayout
+                android:id="@+id/llModule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.srs.lmpapp.utils.MSPTextViewBold
+                    android:id="@+id/lblModules"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    android:text="Modules:"/>
+                <ListView
+                    android:id="@+id/lstModuleList"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scrollbars="none">
+                </ListView>
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llQuizes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/llModule"
+            >
+            <com.srs.lmpapp.utils.MSPTextViewBold
+                android:id="@+id/lblQuiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:text="Quiz:"/>
+            <ListView
+                android:id="@+id/lstQuizList"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scrollbars="none">
+            </ListView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llAssignment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/llQuizes"
+            >
+            <com.srs.lmpapp.utils.MSPTextViewBold
+                android:id="@+id/lblAssignment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:text="Assignments:"/>
+            <ListView
+                android:id="@+id/lstAssignmentList"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scrollbars="none">
+            </ListView>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</ScrollView>
+
+
+</RelativeLayout>

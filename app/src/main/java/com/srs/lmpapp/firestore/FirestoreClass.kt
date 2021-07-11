@@ -13,8 +13,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.srs.lmpapp.model.Course
-import com.srs.lmpapp.model.User
+import com.srs.lmpapp.model.*
 import com.srs.lmpapp.ui.activities.*
 import com.srs.lmpapp.ui.fragments.*
 import com.srs.lmpapp.utils.Constants
@@ -60,7 +59,7 @@ class FirestoreClass {
     }
 
 
-    fun getCourseDetails(activity: Activity,courseID:String) {
+    fun getCourseDetails(activity: Activity, courseID: String) {
 
         // Here we pass the collection name from which we wants the data.
         mFireStore.collection(Constants.TBL_COURSES)
@@ -543,6 +542,59 @@ class FirestoreClass {
             }
     }
 
+    fun uploadVideoToCloudStorage(activity: Activity, videoFileURI: Uri?, videoType: String) {
+
+        //getting the storage reference
+        val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
+            videoType + System.currentTimeMillis() + "."
+                    + Constants.getFileExtension(
+                activity,
+                videoFileURI
+            )
+        )
+
+        //adding the file to reference
+        sRef.putFile(videoFileURI!!)
+            .addOnSuccessListener { taskSnapshot ->
+                // The image upload is success
+                Log.e(
+                    "Firebase Image URL",
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
+                )
+
+                // Get the downloadable url from the task snapshot
+                taskSnapshot.metadata!!.reference!!.downloadUrl
+                    .addOnSuccessListener { uri ->
+                        Log.e("Downloadable Image URL", uri.toString())
+
+                        // Here call a function of base activity for transferring the result to it.
+                        when (activity) {
+                            is AddTopicActivity -> {
+                                activity.videoUploadSuccess(uri.toString())
+                            }
+
+                        }
+                    }
+            }
+            .addOnFailureListener { exception ->
+
+                // Hide the progress dialog if there is any error. And print the error in log.
+                when (activity) {
+                    is AddTopicActivity -> {
+                        activity.hideProgressDialog()
+                    }
+
+
+                }
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    exception.message,
+                    exception
+                )
+            }
+    }
+
     fun uploadCourseDetails(activity: AddCourseActivity,  courseInfo: Course)
     {
 
@@ -550,6 +602,7 @@ class FirestoreClass {
             .document()
             // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
             .set(courseInfo, SetOptions.merge())
+
             .addOnSuccessListener {
 
                         activity.courseUploadSuccess()
@@ -585,6 +638,7 @@ class FirestoreClass {
         }
 
          coursesRef.get() // Will get the documents snapshots.
+
             .addOnSuccessListener { document ->
 
                 // Here we get the list of boards in the form of documents.
@@ -623,8 +677,48 @@ class FirestoreClass {
                 Log.e("Get Product List", "Error while getting product list.", e)
             }
     }
+    fun getCourseByName(activity:Activity,coursename:String,startDate:String)
+    {
+        mFireStore.collection(Constants.TBL_COURSES)
+
+            .whereEqualTo("name", coursename)
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of boards in the form of documents.
+                Log.e("Courses List", document.documents.toString())
+
+                val courseList: ArrayList<Course> = ArrayList()
+
+                for (i in document.documents) {
+
+                    val course:Course ?= i.toObject(Course::class.java)
+                    course?.id=i.id
+                    course?.let { courseList.add(it) }
+                }
+
+                when (activity) {
+                    is AddCourseActivity -> {
+                        activity.successCoursesDetailsFromFireStore(courseList)
+                    }
+
+                }
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error based on the base class instance.
+                when (activity) {
+                    is AddCourseActivity -> {
+                        activity.hideProgressDialog()
+                    }
+
+                }
+                Log.e("Get Product List", "Error while getting product list.", e)
+            }
+
+    }
     fun getCoursesListForFaculty(fragment: Fragment) {
         // The collection name for PRODUCTS
+
         mFireStore.collection(Constants.TBL_COURSES)
 
             .whereEqualTo(Constants.TAKEN_BY, getCurrentUserID())
@@ -786,7 +880,7 @@ class FirestoreClass {
                 )
             }
     }
-    fun getStudentDetails(activity:ViewStudentDetailsActivity, courseId:String)
+    fun getStudentDetails(activity:Activity, courseId:String)
     {
         val studentList:ArrayList<User> = ArrayList()
         mFireStore.collection(Constants.TBL_COURSES).document(courseId)
@@ -815,11 +909,12 @@ class FirestoreClass {
                                     is ViewStudentDetailsActivity-> {
                                         activity.successStudentList(studentList)
                                     }
+
                                 }
                             }
                                 .addOnFailureListener { e ->
                                     when (activity) {
-                                        is ViewStudentDetailsActivity -> {
+                                        is ViewStudentDetailsActivity-> {
                                             activity.hideProgressDialog()
                                         }
                                     }
@@ -868,5 +963,241 @@ class FirestoreClass {
                     e
                 )
             }
+    }
+    fun getModuleListFromFireStore(activity:ModulesActivity, moduleIds:List<String>)
+    {
+        val modules:ArrayList<Module> = ArrayList()
+
+        mFireStore.collection(Constants.TBL_MODULES).get()
+            .addOnSuccessListener { document ->
+                for (i in document.documents)
+                {
+                   if(i.id in moduleIds)
+                   {
+                       val module = i.toObject(Module::class.java)!!
+                       module.id=i.id
+                       modules.add(module)
+                   }
+                }
+                when (activity) {
+                    is ModulesActivity -> {
+                        // Hide the progress dialog if there is any error. And print the error in log.
+                        activity.successModuleListFromFireStore(modules)
+                    }
+
+                }
+            }
+            .addOnFailureListener { exception ->
+                when (activity) {
+                    is ModulesActivity -> {
+                        // Hide the progress dialog if there is any error. And print the error in log.
+                        activity.hideProgressDialog()
+                    }
+
+                }
+            }
+    }
+    fun uploadModuleDetails(activity: AddModuleActivity,  moduleInfo: Module)
+    {
+
+        mFireStore.collection(Constants.TBL_MODULES).add(moduleInfo)
+            .addOnSuccessListener {
+
+                activity.moduleUploadSuccess(it.id)
+
+            }
+
+            .addOnFailureListener{ e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,"Error while uploading the courses details.",e)
+            }
+
+
+
+    }
+    fun uploadTopicDetails(activity: AddTopicActivity,  topicInfo: Topic)
+    {
+        mFireStore.collection(Constants.TBL_TOPICS).add(topicInfo)
+            .addOnSuccessListener {
+
+                activity.topicUploadSuccess(it.id)
+
+            }
+
+            .addOnFailureListener{ e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,"Error while uploading the courses details.",e)
+            }
+
+    }
+
+    fun deleteModule(activity : ModulesActivity,moduleId:String)
+    {
+        mFireStore.collection(Constants.TBL_MODULES)
+            .document(moduleId)
+            .delete()
+            .addOnSuccessListener {
+
+                // Notify the success result to the base class.
+                activity.moduleDeleteSuccess()
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is an error.
+                activity.hideProgressDialog()
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while deleting the module.",
+                    e
+                )
+            }
+
+    }
+    fun deleteTopic(activity:TopicsListActivity,topicId:String)
+    {
+        mFireStore.collection(Constants.TBL_TOPICS)
+            .document(topicId)
+            .delete()
+            .addOnSuccessListener {
+
+                // Notify the success result to the base class.
+                activity.topicDeleteSuccess()
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is an error.
+                activity.hideProgressDialog()
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while deleting the module.",
+                    e
+                )
+            }
+    }
+    fun getTopicListFromFireStore(activity:TopicsListActivity, topicIds:List<String>)
+    {
+        val topics:ArrayList<Topic> = ArrayList()
+
+        mFireStore.collection(Constants.TBL_TOPICS).get()
+            .addOnSuccessListener { document ->
+                for (i in document.documents)
+                {
+                    if(i.id in topicIds)
+                    {
+                        val topic = i.toObject(Topic::class.java)!!
+                        topic.id=i.id
+                        topics.add(topic)
+                    }
+                }
+                when (activity) {
+                    is TopicsListActivity -> {
+                        // Hide the progress dialog if there is any error. And print the error in log.
+                        activity.successTopicListFromFireStore(topics)
+                    }
+
+                }
+            }
+            .addOnFailureListener { exception ->
+                when (activity) {
+                    is TopicsListActivity -> {
+                        // Hide the progress dialog if there is any error. And print the error in log.
+                        activity.hideProgressDialog()
+                    }
+
+                }
+            }
+    }
+    fun addAssignment(activity: AddAssignmentActivity, assignmentInfo: Assignment, courseId:String)
+
+    {
+        mFireStore.collection(Constants.TBL_COURSES)
+            .document(courseId).collection("assignments").add(assignmentInfo)
+            .addOnSuccessListener()
+            {
+                assignmentInfo.id=it.id
+                activity.assignmentAddSuccess(assignmentInfo)
+            }
+            .addOnFailureListener{ e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,"Error while uploading the Assignment details.",e)
+            }
+
+    }
+    fun createCourseInstance(activity:CourseDetailsActivity,currentCourse:Course)
+    {
+        mFireStore.collection(Constants.TBL_COURSES)
+            .document(currentCourse.id).collection("students").document(this.getCurrentUserID())
+            .set(currentCourse,SetOptions.merge())
+            .addOnSuccessListener ()
+            {
+                Log.d("Assignment","added assignment instance for student: ${getCurrentUserID()}")
+                activity.addCourseInstanceSuccessfully()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while registering the user.",
+                    e
+                )
+            }
+    }
+
+
+    fun createAssignmentInstance(activity: AddAssignmentActivity,currentAssignment:Assignment,currentCourse:Course)
+    {
+        var studentList:List<String> = ArrayList()
+        studentList= currentCourse.enrolledby!!
+        for(studentId in studentList) {
+            mFireStore.collection(Constants.TBL_COURSES).document(currentCourse.id)
+                .collection("students").document(studentId)
+                .collection("assignments").document(currentAssignment.id!!)
+                .set(currentAssignment,SetOptions.merge())
+                .addOnSuccessListener ()
+                        {
+                            Log.d("Assignment","added assignment instance for student: ${studentId}")
+                         }
+                .addOnFailureListener { e ->
+                    activity.hideProgressDialog()
+                    Log.e(
+                        activity.javaClass.simpleName,
+                        "Error while registering the user.",
+                        e
+                    )
+                }
+        }
+        activity.createAssignmentInstanceSuccess()
+    }
+
+    fun getCurrentcCourseDetails(activity:CurrentCourseDetailsActivity,courseID:String)
+    {
+        val assignmentList: ArrayList<Assignment> = ArrayList()
+        mFireStore.collection(Constants.TBL_COURSES)
+            .document(courseID).collection("students").document(this.getCurrentUserID()).get()
+            .addOnSuccessListener { document ->
+                val course = document.toObject(Course::class.java)!!
+                course?.id = courseID
+                mFireStore.collection(Constants.TBL_COURSES)
+                    .document(courseID).collection("students").document(this.getCurrentUserID())
+                    .collection("assignments")
+                    .get().addOnSuccessListener ()
+                    {
+
+
+
+                    }
+
+                activity.courseDetailsSuccess(course,assignmentList)
+
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,"Error while getting user details.", e)
+
+            }
+
+
     }
 }

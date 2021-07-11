@@ -18,5 +18,6 @@ import kotlinx.android.parcel.Parcelize
         var id:String="",
         var enrolledby:List<String>?=ArrayList<String>(),
         var description:String?="",
+        var status:String?="",
         var modules:List<String>?=ArrayList<String>()
     ): Parcelable

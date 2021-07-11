@@ -88,4 +88,10 @@
     <string name="title_addcourses">Add Courses</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <!-- FCM -->
+    <string name="message_subscribed">Message Subscribed</string>
+    <string name="message_subscribe_failed">Message subscribe failed</string>
+    <string name="notification_channel_id">LMS_Channel</string>
+    <string name="notification_channel_name">LMS_Channel</string>
 </resources>

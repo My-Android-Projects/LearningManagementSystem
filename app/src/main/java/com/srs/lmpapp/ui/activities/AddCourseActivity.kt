@@ -3,6 +3,7 @@ package com.srs.lmpapp.ui.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -23,6 +24,7 @@ import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.utils.Constants
 import com.srs.lmpapp.utils.GlideLoader
+import com.srs.lmpapp.utils.NotificationUtils
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,10 +33,10 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
     private var mCourseImageURL: String = ""
     private var mSelectedImageFileUri: Uri? = null
 
-    private lateinit var modules : List<String>
     private lateinit var binding:ActivityAddCourseBinding
     private  var currentCourse:Course=Course()
-    private val ADD_MODULE_ACTIVITY_REQUEST_CODE = 200
+    private var moduleList:ArrayList<String> = ArrayList<String>()
+    private val MODULE_ACTIVITY_REQUEST_CODE = 200
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,13 +97,16 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
                     }
                 }
                 R.id.tv_viewModules-> {
-                    var destIntent = Intent(this@AddCourseActivity, AddModuleActivity::class.java)
-                    destIntent.putExtra(
-                        com.srs.lmpapp.utils.Constants.CURRENT_COURSE,
-                        currentCourse
-                    )
+                    if(currentCourse!=null) {
+                        var destIntent = Intent(this@AddCourseActivity, ModulesActivity::class.java)
+                        destIntent.putStringArrayListExtra(
+                            com.srs.lmpapp.utils.Constants.MODULES,
+                            moduleList)
 
-                    startActivityForResult(destIntent, ADD_MODULE_ACTIVITY_REQUEST_CODE)
+                        startActivityForResult(destIntent, MODULE_ACTIVITY_REQUEST_CODE)
+
+                    }
+
                 }
                 R.id.btn_submit -> {
                     if (validateCourseDetails()) {
@@ -194,10 +199,11 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         }
 
 
-        if (requestCode == ADD_MODULE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == MODULE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 //currentCourse = data?.getParcelableExtra(Constants.CURRENT_COURSE)!!
-                 currentCourse = data?.getParcelableExtra(Constants.CURRENT_COURSE)!!
+                moduleList= data?.getStringArrayListExtra(Constants.MODULES)!!
+
 
             }
         }
@@ -275,10 +281,29 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         }
     }
     fun courseUploadSuccess() {
+        currentCourse.name?.let {
+            FirestoreClass().getCourseByName(this@AddCourseActivity,
+                currentCourse.name!!,currentCourse.startdate!!)
+        }
+
+
+
+    }
+    fun successCoursesDetailsFromFireStore(courseList:ArrayList<Course>)
+    {
         hideProgressDialog()
         Toast.makeText(this@AddCourseActivity, "Uploaded Course successfully", Toast.LENGTH_SHORT).show()
-
-
+        val course=courseList[0]
+        pushNotification(course.id)
+        onBackPressed()
+    }
+    private fun pushNotification(courseID:String)
+    {
+        val topicName_Faculty="Faculty_${courseID}"
+        NotificationUtils.subscribeToTopic(topicName_Faculty)
+        val sharedPreferences =getSharedPreferences(Constants.MYLMSAPP_PREFERENCES, Context.MODE_PRIVATE)
+        val token=sharedPreferences.getString(Constants.APP_TOKEN,null);
+        NotificationUtils.sendMessage("Course","Added course '${binding.txtCourseName.text}'",token!!)
     }
     fun imageUploadSuccess(imageURL: String)
     {
@@ -327,7 +352,7 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         currentCourse.enddate=binding.txtEndDate.text.toString().trim { it <= ' ' }
         currentCourse.enrolledby=listOf()
         currentCourse.id=""
-        //currentCourse.modules=modules
+        currentCourse.modules=moduleList
         currentCourse.courseimage= mCourseImageURL
 
 
@@ -335,3 +360,5 @@ class AddCourseActivity : BaseActivity(),View.OnClickListener {
         FirestoreClass().uploadCourseDetails(this@AddCourseActivity, currentCourse)
     }
 }
+
+

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/auth_screens_background"
+    app:cardCornerRadius="10dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="30dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:outlineSpotShadowColor="@color/colorThemePink"
+    android:id="@+id/llModuleContent"
+        >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/llContent"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:orientation="vertical"
+
+            >
+            <com.srs.lmpapp.utils.MSPTextView
+                android:id="@+id/txtModuleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name: Module Name"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:textColor="#000000"/>
+
+            <com.srs.lmpapp.utils.MSPTextView
+                android:id="@+id/txtModuleDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Duration: 2hrs"
+                android:textAlignment="center"
+                android:textSize="15sp"/>
+
+            <com.srs.lmpapp.utils.MSPTextView
+                android:id="@+id/txtNoOfTopics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Topics: 5"
+                android:textSize="15sp"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+        <ImageButton
+            android:layout_weight="2"
+            android:id="@+id/btn_delete_module"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/content_description"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_vector_delete"/>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

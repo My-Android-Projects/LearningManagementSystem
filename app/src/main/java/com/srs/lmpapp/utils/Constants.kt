@@ -7,10 +7,11 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 
 object Constants {
-
+    const val APP_TOKEN: String = "token"
     const val TBL_USERS: String = "users"
     const val TBL_COURSES: String = "courses"
-    const val TBL_ENROLLED_COURSES: String = "enrolled_courses"
+    const val TBL_MODULES: String = "modules"
+    const val TBL_TOPICS: String = "topics"
     const val MYLMSAPP_PREFERENCES: String = "MyLMSAppPrefs"
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
     const val LOGGED_IN_USER_EMAIL: String= "logged_in_user_email"
@@ -20,14 +21,15 @@ object Constants {
     const val LOGGED_IN_USER_CREDITS:String="logged_in_user+credit"
     const val LOGGED_IN_USER_COURSES:String="logged_in_user_coursess"
     const val CURRENT_ENROLLED_COURSE_ID:String="current_course_id"
-
+    const val TOPIC_NAME="topic_"
     const val EXTRA_USER_DETAILS:String="extra_user_details"
     const val READ_STORAGE_PERMISSION_CODE = 2
  const val TOT_CREDITS:String="totcredits"
     const val TOT_COURSES:String="totcourses"
     const val MODULES="modules"
-
+    const val TOPICS="topics"
     const val PICK_IMAGE_REQUEST_CODE = 2
+    const val PICK_VIDEO_REQUEST_CODE = 3
     const val CURRENT_COURSE:String="currentCourse"
     const val CURRENT_COURSE_ID:String="currentCourseId"
 
@@ -37,7 +39,6 @@ object Constants {
     // Constant variables for Gender
     const val MALE: String = "Male"
     const val FEMALE: String = "Female"
-
     // Firebase database field names
     const val MOBILE: String = "mobile"
     const val GENDER: String = "gender"
@@ -51,7 +52,7 @@ object Constants {
     const val USER_PROFILE_IMAGE:String = "User_Profile_Image"
     const val FILTER_COURSE_CREDITS:String="credits"
     const val FILTER_COURSE_CATEGORY:String ="category"
-
+    const val CURRENT_MODULE:String="current_module"
     /**
      * A function for user profile image selection from phone storage.
      */
@@ -64,6 +65,16 @@ object Constants {
         // Launches the image selection of phone storage using the constant code.
         activity.startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
     }
+    fun showVideoChooser(activity: Activity) {
+        // An intent for launching the image selection of phone storage.
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        )
+        // Launches the image selection of phone storage using the constant code.
+        activity.startActivityForResult(galleryIntent, PICK_VIDEO_REQUEST_CODE)
+    }
+
 
     /**
      * A function to get the image file extension of the selected image.

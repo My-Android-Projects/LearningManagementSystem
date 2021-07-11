@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-tools:context=".ui.activities.AddModuleActivity">
+tools:context=".ui.activities.AddAssignmentActivity">
 <androidx.appcompat.widget.Toolbar
-    android:id="@+id/toolbar_add_Module_activity"
+    android:id="@+id/toolbar_add_assignment_activity"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@drawable/app_gradient_color_background"
@@ -24,35 +22,28 @@ tools:context=".ui.activities.AddModuleActivity">
         android:gravity="center"
         android:paddingStart="@dimen/toolbar_title_paddingStart"
         android:paddingEnd="0dp"
-        android:text="ADD MODULE"
+        android:text="ADD ASSIGNMENT"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/toolbar_title_text_size"
         android:textStyle="bold" />
 
 </androidx.appcompat.widget.Toolbar>
-
+<ScrollView
+    android:id="@+id/llScrooView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/add_product_header_image_height"
         android:orientation="vertical">
+      >
 
 
-        <com.srs.lmpapp.utils.MSPTextViewBold
-            android:id="@+id/tv_viewTopics"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="290dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View Topics"
-
-            android:foreground="?attr/selectableItemBackground"
-            android:padding="@dimen/clickable_text_view_padding"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="@dimen/forgot_password_textSize"
-
-            />
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_moduleName"
+            android:id="@+id/til_assignmentname"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,52 +53,93 @@ tools:context=".ui.activities.AddModuleActivity">
             android:hint="name"
             >
             <com.srs.lmpapp.utils.MSPEditText
-                android:id="@+id/txtModuleName"
+                android:id="@+id/txtAssignmentName"
                 app:endIconMode="clear_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 />
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_moduleDuration"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Duration"
 
-            >
-            <com.srs.lmpapp.utils.MSPEditText
-                android:id="@+id/txtmoduleDuration"
-                app:endIconMode="clear_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="0"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_moduleNoOfTopics"
+            android:id="@+id/til_assignmentDesc"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="300"
+            app:endIconMode="clear_text"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="16dp"
-            android:hint="No Of Topics"
-            >
+            android:scrollbars="vertical"
+
+            android:hint="description">
             <com.srs.lmpapp.utils.MSPEditText
-                android:id="@+id/txtmoduleNoOfTopics"
-                app:endIconMode="clear_text"
+                android:id="@+id/txtAssignmentDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="0"
+                android:imeOptions="actionDone"
+                android:lines="20"
+                android:scrollbars="vertical"
                 />
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.srs.lmpapp.utils.MSPButton
+
+            android:id="@+id/btn_addAttachment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_background"
+
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingTop="@dimen/btn_padding"
+            android:paddingBottom="@dimen/btn_padding"
+            android:text="Add Attachment"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/btn_textSize" />
+
+        <ListView
+            android:id="@+id/lstAttachment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:verticalScrollbarPosition="right"
+
+            android:scrollbars="none">
+        </ListView>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_enddate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:startIconDrawable="@drawable/ic_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="16dp"
+                android:hint="end date"
+                android:layout_weight="5"
+
+                >
+                <com.srs.lmpapp.utils.MSPEditText
+                    android:id="@+id/txtAssignmentEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:imeOptions="actionDone"
+                    android:inputType="none"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -132,7 +164,7 @@ tools:context=".ui.activities.AddModuleActivity">
 
 
     </LinearLayout>
-
+</ScrollView>
 
 
 </LinearLayout>

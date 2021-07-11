@@ -1,5 +1,7 @@
 package com.srs.lmpapp.ui.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
@@ -10,6 +12,7 @@ import com.srs.lmpapp.databinding.ActivityEnrolledCourseDetailsBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.utils.Constants
+import com.srs.lmpapp.utils.NotificationUtils
 
 class EnrolledCourseDetailsActivity : BaseActivity() {
     private lateinit var binding: ActivityEnrolledCourseDetailsBinding
@@ -29,6 +32,12 @@ class EnrolledCourseDetailsActivity : BaseActivity() {
                    currentCourse.id
                )
            }
+        }
+        binding.btnOpenCourse.setOnClickListener()
+        {
+            val destIntent = Intent(this@EnrolledCourseDetailsActivity, CurrentCourseDetailsActivity::class.java)
+            destIntent.putExtra(Constants.CURRENT_COURSE,currentCourse)
+            startActivity(destIntent)
         }
     }
 
@@ -73,5 +82,19 @@ class EnrolledCourseDetailsActivity : BaseActivity() {
         val disabledColor =
             ContextCompat.getColor(applicationContext, R.color.button_disabled_color)
         binding.btnUnEnroll.setBackgroundColor(disabledColor)
+        pushNotification()
+    }
+
+    private fun pushNotification()
+    {
+        val topicName_Student="Student_${currentCourse.id}"
+        NotificationUtils.unSubscribeToTopic(topicName_Student)
+
+        val topicName_Faculty="Faculty_${currentCourse.id}"
+        NotificationUtils.sendMessage("Un-Enrollment","Un-enrolled to course '${currentCourse.name}'",topicName_Faculty)
+
+        val sharedPreferences =getSharedPreferences(Constants.MYLMSAPP_PREFERENCES, Context.MODE_PRIVATE)
+        val token=sharedPreferences.getString(Constants.APP_TOKEN,null);
+        NotificationUtils.sendMessage("Un-Enrollment","Un-enrolled to course '${currentCourse.name}'",token!!)
     }
 }

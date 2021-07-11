@@ -29,6 +29,12 @@ class FacultyCourseDetailsActivity : BaseActivity() {
             destIntent.putExtra(Constants.CURRENT_COURSE,currentCourse)
             startActivity(destIntent)
         }
+        binding.btnAddAssignment.setOnClickListener()
+        {
+            val destIntent = Intent(this@FacultyCourseDetailsActivity, AddAssignmentActivity::class.java)
+            destIntent.putExtra(Constants.CURRENT_COURSE,currentCourse)
+            startActivity(destIntent)
+        }
     }
 
     fun displayDetails()

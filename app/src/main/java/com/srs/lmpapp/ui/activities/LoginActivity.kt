@@ -1,19 +1,25 @@
 package com.srs.lmpapp.ui.activities
 
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.WindowManager
 import android.widget.RadioButton
+import android.widget.Toast
 import com.srs.lmpapp.R
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 
 import com.srs.lmpapp.databinding.ActivityLoginBinding
 import com.srs.lmpapp.firestore.FirestoreClass
@@ -21,6 +27,7 @@ import com.srs.lmpapp.model.User
 import com.srs.lmpapp.utils.Constants
 
 private const val CURRENT_USER = "currentUser"
+private const val TAG="LOGINACTIVITY"
 @Suppress("DEPRECATION")
 class LoginActivity : BaseActivity() {
 
@@ -33,6 +40,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityLoginBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         window.setFlags(
@@ -58,6 +66,24 @@ class LoginActivity : BaseActivity() {
             val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            val sharedPreferences =getSharedPreferences(Constants.MYLMSAPP_PREFERENCES,  Context.MODE_PRIVATE )
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString(Constants.APP_TOKEN,token)
+            editor.apply()
+            // Log and toast
+            val msg =  token!!
+            Log.d(TAG, msg)
+            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
     }
 
 
@@ -211,6 +237,8 @@ class LoginActivity : BaseActivity() {
         startActivity(destIntent)
         finish()
     }
+
+
 
 
 

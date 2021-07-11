@@ -31,7 +31,8 @@ android:background="#fff">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="70dp">
+    android:layout_marginTop="70dp"
+    android:id="@+id/llscollview">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -235,16 +236,45 @@ android:background="#fff">
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        >
 <Button
     android:id="@+id/btnCancel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
     android:background="@drawable/button_background"
     android:text="Cancel Session"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     android:textColor="#ffff"
     android:textStyle="bold"
     android:textSize="19sp"/>
-
-
+        <Button
+            android:id="@+id/btn_addAssignment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_background"
+            android:layout_below="@id/btnCancel"
+            android:text="Add Assignment"
+            android:textColor="#ffff"
+            android:textStyle="bold"
+            android:textSize="19sp"/>
+        <Button
+            android:id="@+id/btn_addQuiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_background"
+            android:layout_below="@id/btnCancel"
+            android:layout_toRightOf="@id/btn_addAssignment"
+            android:text="Add Quiz"
+            android:textColor="#ffff"
+            android:textStyle="bold"
+            android:textSize="19sp"/>
+    </RelativeLayout>
 </RelativeLayout>

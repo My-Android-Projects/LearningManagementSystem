@@ -1,8 +1,12 @@
 package com.srs.lmpapp.ui.activities
 
 
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.core.content.ContextCompat
@@ -12,6 +16,7 @@ import com.srs.lmpapp.databinding.ActivityCourseDetailsBinding
 import com.srs.lmpapp.firestore.FirestoreClass
 import com.srs.lmpapp.model.Course
 import com.srs.lmpapp.utils.Constants
+import com.srs.lmpapp.utils.NotificationUtils
 
 
 class CourseDetailsActivity : BaseActivity() {
@@ -91,12 +96,35 @@ class CourseDetailsActivity : BaseActivity() {
 
     fun allDetailsUpdatedSuccessfully()
     {
+        FirestoreClass().createCourseInstance(this@CourseDetailsActivity,currentCourse)
+
+    }
+    fun addCourseInstanceSuccessfully()
+    {
         hideProgressDialog()
         showErrorSnackBar("Course Enrolled", false)
+
+
         binding.btnEnroll.setText("Enrolled")
         binding.btnEnroll.isEnabled=false
         val disabledColor =
             ContextCompat.getColor(applicationContext, R.color.button_disabled_color)
         binding.btnEnroll.setBackgroundColor(disabledColor)
+        pushNotification()
     }
+    private fun pushNotification()
+    {
+        val topicName_Student="Student_${currentCourse.id}"
+        NotificationUtils.subscribeToTopic(topicName_Student)
+
+        val topicName_Faculty="Faculty_${currentCourse.id}"
+        NotificationUtils.sendMessage("Enrollment","Enrolled to course '${currentCourse.name}'",topicName_Faculty)
+
+
+        val sharedPreferences =getSharedPreferences(Constants.MYLMSAPP_PREFERENCES,Context.MODE_PRIVATE)
+        val token=sharedPreferences.getString(Constants.APP_TOKEN,null);
+        NotificationUtils.sendMessage("Enrollment","Enrolled to course '${currentCourse.name}'",token!!)
+    }
+
+
 }
